@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Example</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+	<div id="app">
+		<v-app>
+			<v-toolbar dark color="primary" app>
+				<v-toolbar-title class="white--text">Интернет магазин</v-toolbar-title>
+
+				<v-spacer></v-spacer>
+
+				<v-btn flat href="/">Главная</v-btn>
+				<v-btn flat href="/shop">Товары</v-btn>
+				<v-btn flat>Контакты</v-btn>
+        		<v-btn flat icon color="white">
+        			<v-badge color="green">
+	          			<template v-slot:badge>
+	          				{% if count_shop %}
+	        				<span>{{count_shop}}</span>
+	        				{% endif %}
+	      				</template>
+	          			<v-icon>shopping_cart</v-icon>
+          			</v-badge>
+        		</v-btn>
+				
+			</v-toolbar>
+
+			<v-content>
+				{% block content %}{% endblock %}
+			</v-content>
+		</v-app>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+	<script>
+		new Vue({ el: '#app' })
+	</script>
+</body>
+</html>
