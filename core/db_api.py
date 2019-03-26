@@ -1,8 +1,8 @@
 import pymysql
 import logging
 
-from config import DbSettings
-import log
+from .config import DbSettings
+import core.log
 
 logger = logging.getLogger(__name__)
 
@@ -32,3 +32,10 @@ class DbApi:
 				logger.info("Успешно получили курсор!")
 			except pymysql.Error as err:
 				logger.error("Не удалось получить курсор, error: {}".format(err))
+
+	def get_books(self, type='1'):
+		query = """SELECT * FROM books WHERE '%(type)s'"""%{'type':type}
+		self._cur.execute(query)
+		self._cur.fetchall()
+		return []
+

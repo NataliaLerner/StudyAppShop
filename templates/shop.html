@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
+<v-container grid-list-md text-xs-center>
+    <v-layout row wrap>
+    	{% for book in books %}
+		<v-hover>
+		    <v-card class="mx-auto" width=300>
+		      <v-img
+		        :aspect-ratio="16/9"
+		        src={{ book.link_icon }}
+		      ></v-img>
+		      <v-card-title>
+		        <div>
+					<span class="headline">{{ book.name }}</span>
+					<div class="d-flex">
+					{{ book.author }}
+					</div>
 
-<v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" height="200">
-	<v-layout align-center column justify-center>
-		<v-btn large color="primary">
-			Начать покупки!
-		</v-btn>
+		        </div>
+		        <v-layout row wrap>
+		        	<v-flex xs6 align-content-center>
+		        		<h1>60₽</h1>
+			    	</v-flex>
+			    	<v-flex xs6>
+			    		<v-btn icon class="mr-0">
+				          <v-icon color="primary">keyboard_arrow_right</v-icon>
+				        </v-btn>
+			    	</v-flex>
+		    	</v-layout>
+		      </v-card-title>
+		    </v-card>
+		</v-hover>
+		{% endfor %}
 	</v-layout>
-</v-parallax>
+</v-container>
 
 {% endblock %}

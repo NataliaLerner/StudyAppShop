@@ -4,7 +4,7 @@ class DbSettings:
 	_ini_file_name = ''
 	_config = None
 
-	def __init__(self, ini_file_name = './../settings/db_settings.ini'):
+	def __init__(self, ini_file_name = './settings/db_settings.ini'):
 		self._ini_file_name = ini_file_name
 		self.load_ini_file()
 
