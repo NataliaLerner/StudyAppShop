@@ -5,8 +5,10 @@
 .
 +-- core ( модуль с базовыми классами python )
 |   +-- __init__.py
+|   +-- base_type.py
 |   +-- config.py
 |   +-- db_api.py
+|   +-- google_auth.py
 |   +-- log.py
 +-- settings
 |   +-- db_settings.ini
@@ -22,7 +24,9 @@
 Название файла                                  | Содержание файла
 ------------------------------------------------|----------------------
 [./core/config.py](#config_py)                  | Классы для работы с конфиг файлами
+[./core/base_type.py](#base_type_py)            | Класс с пользовательскими типами
 [./core/db_api.py](#db_api_py)                  | Класс, реализующий методы для доступа к БД
+[./core/google_auth.py](#google_auth_py)        | Классы для авторизации через гугл
 [./core/log.py](#log_py)                        | Класс с настройками логера
 [./settings/db_settings.ini](#db_settings_ini)  | Настройки БД
 [./settings/logging.config](#logging_config)    | Файл конфигурации для логера
@@ -34,7 +38,13 @@
 <a name="config_py"></a> ./core/config.py
 -----------------------------------------------------------------------
 
+<a name="base_type_py"></a> ./core/base_type.py
+-----------------------------------------------------------------------
+
 <a name="db_api_py"></a> ./core/db_api.py
+-----------------------------------------------------------------------
+
+<a name="google_auth_py"></a> ./core/google_auth.py
 -----------------------------------------------------------------------
 
 <a name="log_py"></a> ./core/log.py
