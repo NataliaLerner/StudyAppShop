@@ -1,44 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
 
-<v-timeline>
-	<v-timeline-item color="purple lighten-2" fill-dot right>
-		<v-card>
-			<v-card-title class="purple lighten-2">
-				<v-icon dark size="42" class="mr-3">done</v-icon>
-				<h2 class="display-1 white--text font-weight-light">Шаг 1</h2>
-			</v-card-title>
-			<v-container>
-				<h3>Выберите товар!</h3>
-			</v-container>
-		</v-card>
-	</v-timeline-item>
 
-	<v-timeline-item color="amber lighten-1" fill-dot left>
-		<v-card>
-			<v-card-title class="amber lighten-1">
-				<v-icon dark size="42" class="mr-3">add_shopping_cart</v-icon>
-				<h2 class="display-1 white--text font-weight-light">Шаг 2</h2>
-			</v-card-title>
-			<v-container>
-				<h3>Перейдите в корзину</h3>
-			</v-container>
-		</v-card>
-	</v-timeline-item>
+<v-carousel>
+    <v-carousel-item src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2HajqSMRIru_PmCnDtugiJLg9j6oV_d92n_PpZzhYqCC1zID6"></v-carousel-item>
+    <v-carousel-item src="https://i.ytimg.com/vi/M8pWfDdTxKk/maxresdefault.jpg"></v-carousel-item>
+    <v-carousel-item src="https://st.weblancer.net/download/477865_935xp.jpg"></v-carousel-item>
+</v-carousel>
 
-	<v-timeline-item color="cyan lighten-1" fill-dot right>
-		<v-card>
-			<v-card-title class="cyan lighten-1">
-				<v-icon dark size="42" class="mr-3">payment</v-icon>
-				<h2 class="display-1 white--text font-weight-light">Шаг 3</h2>
-			</v-card-title>
-			<v-container>
-				<h3>Оплатите</h3>
-			</v-container>
-		</v-card>
-	</v-timeline-item>
+<v-div>
+<v-layout class="mt-4 mb-4" row>
+    <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-img
+          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+          height="200px"
+        >
+        </v-img>
 
-</v-timeline>
+        <v-card-title primary-title>
+          <div>
+            <div class="headline">Top western road trips</div>
+            <span class="grey--text">1,000 miles of wonder</span>
+          </div>
+        </v-card-title>
+
+        <v-card-actions>
+          <v-btn flat>Share</v-btn>
+          <v-btn flat color="purple">Explore</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="show = !show">
+            <v-icon>{{ 'keyboard_arrow_down' if show else 'keyboard_arrow_up' }}</v-icon>
+          </v-btn>
+        </v-card-actions>
+
+        <v-slide-y-transition>
+          <v-card-text v-show="show">
+            I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+          </v-card-text>
+        </v-slide-y-transition>
+      </v-card>
+    </v-flex>
+  </v-layout>
+</v-div>
+
+
 <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" height="200">
 	<v-layout align-center column justify-center>
 		<v-btn large color="primary" href="/shop">

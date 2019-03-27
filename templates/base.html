@@ -11,7 +11,7 @@
 <body>
 	<div id="app">
 		<v-app>
-			<v-toolbar dark color="primary" app>
+			<v-toolbar dark color="primary" app scroll-off-screen>
 
 				<v-flex flat xs12 sm6 md3>
 					<v-text-field label="Поиск" single-line color="white"></v-text-field>
@@ -21,23 +21,35 @@
 				</v-btn>
 
 				<v-spacer></v-spacer>
-
-				<v-btn flat href="/">Главная</v-btn>
-				<v-btn flat href="/shop">Товары</v-btn>
-				<v-btn flat>Контакты</v-btn>
-        		<v-btn flat icon color="white">
-        			<v-badge color="green" overlap>
-	          			<template v-slot:badge>
-	          				{% if count_shop %}
-	        				<span>{{count_shop}}</span>
-	        				{% endif %}
-	      				</template>
-	          			<v-icon>shopping_cart</v-icon>
-          			</v-badge>
-        		</v-btn>
-        		<v-btn flat icon href="/authorize/google">
-        			<v-icon>fab fa-google</v-icon>
-        		</v-btn>
+				<v-toolbar-items>
+					<v-btn flat href="/">Главная</v-btn>
+					<v-btn flat href="/shop">Товары</v-btn>
+					<v-btn flat>Контакты</v-btn>
+	        		<v-btn flat icon color="white">
+	        			<v-badge color="green" overlap>
+		          			<template v-slot:badge>
+		          				{% if count_shop %}
+		        					<span>{{count_shop}}</span>
+		        				{% endif %}
+		      				</template>
+		          			<v-icon>shopping_cart</v-icon>
+	          			</v-badge>
+	        		</v-btn>
+	        		{% if 'user' in session.keys() %}
+	        			{% if session['user']['_access_lavel'] == 0 %}
+	        				<v-btn flat>Администрирование</v-btn>
+	        			{% endif %}
+	        		{% endif %}
+	        		{% if 'user' in session.keys()%}
+	        		<v-btn flat icon href="/logout">
+	        			<v-icon>exit_to_app</v-icon>
+	        		</v-btn>
+	        		{% else %}
+	        		<v-btn flat icon href="/authorize/google">
+	        			<v-icon>fab fa-google</v-icon>
+	        		</v-btn>
+	        		{% endif %}
+	        	</v-toolbar-items>
 				
 			</v-toolbar>
 

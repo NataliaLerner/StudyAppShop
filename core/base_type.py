@@ -19,7 +19,7 @@ class User:
 		self._user_name = user_name
 		self._e_mail = e_mail
 		self._number_phone = number_phone
-		self.access_lavel = access_lavel
+		self._access_lavel = access_lavel
 
 	def __str__(self):
 		return "User: id={0} , user_name={1} , e_mail={2} , number_phone={3} , access_lavel={4}".format(

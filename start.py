@@ -9,7 +9,6 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     session['shopping'] = {'1':[],'2':[]}
-
     return render_template('index.html')
 
 @app.route('/shop')
@@ -38,6 +37,12 @@ def oauth_callback(provider):
     username, email = oauth.callback()
     user = db.get_user(username, email)
     session['user'] = user.__dict__
+    return redirect('/')
+
+@app.route('/logout')
+def logout():
+    if 'user' in session.keys():
+        session.pop('user')
     return redirect('/')
 
 if __name__ == '__main__':
