@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, url_for
+from flask import Flask, render_template, session, redirect, url_for, request
 
 from core import ListBooks, User
 from core import DbApi
@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     session['shopping'] = {'1':[],'2':[]}
-    return render_template('index.html')
+    return render_template('index.html', show = False)
 
 @app.route('/shop')
 def shop():
@@ -44,6 +44,11 @@ def logout():
     if 'user' in session.keys():
         session.pop('user')
     return redirect('/')
+
+@app.route('/show_info_card', methods=['GET'])
+def show_info_card():
+    print(request.args.get('show'))
+    return redirect('/')#render_template('index.html', show = True if request.args.get('show') == 'False' else False)
 
 if __name__ == '__main__':
     app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
