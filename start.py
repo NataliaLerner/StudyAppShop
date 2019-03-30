@@ -11,6 +11,10 @@ def index():
     session['shopping'] = {'1':[],'2':[]}
     return render_template('index.html', show = False)
 
+@app.route('/contacts')
+def contacts():
+    return render_template('contacts.html')
+
 @app.route('/shop')
 def shop():
     books = [
