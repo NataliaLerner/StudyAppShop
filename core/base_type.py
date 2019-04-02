@@ -28,6 +28,8 @@ class User:
 
 class Book:
 
+	__id = None
+
 	def __init__(self):
 		pass
 
