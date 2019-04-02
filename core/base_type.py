@@ -29,6 +29,7 @@ class User:
 class Book:
 
 	__id = None
+    __descr = None
 
 	def __init__(self):
 		pass
