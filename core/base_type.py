@@ -3,7 +3,7 @@ from enum import IntEnum
 
 ListBooks = namedtuple('listBooks', 'link_icon name author')
 
-class AccessLavel(IntEnum):
+class AccessLevel(IntEnum):
 	ADMIN = 0
 	USER = 1
 
@@ -12,9 +12,9 @@ class User:
 	_user_name = None
 	_e_mail = None
 	_number_phone = None
-	_access_lavel = AccessLavel.USER
+	_access_level = AccessLevel.USER
 
-	def __init__(self, id_ , user_name, e_mail, number_phone, access_lavel = AccessLavel.USER):
+	def __init__(self, id_ , user_name, e_mail, number_phone, access_lavel = AccessLevel.USER):
 		self._id = id_
 		self._user_name = user_name
 		self._e_mail = e_mail
@@ -27,9 +27,8 @@ class User:
 
 
 class Book:
-
 	__id = None
-    __descr = None
+	__descr = None
 
 	def __init__(self):
 		pass
