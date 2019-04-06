@@ -4,6 +4,11 @@ from core import ListBooks, User
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
 
+import os, ssl
+if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
+        getattr(ssl, '_create_unverified_context', None)):
+    ssl._create_default_https_context = ssl._create_unverified_context
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -61,4 +66,4 @@ def show_info_card():
 if __name__ == '__main__':
     app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
     db = DbApi()
-    app.run(debug=True)
+    app.run(debug=True, port = 3306)
