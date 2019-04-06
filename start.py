@@ -15,6 +15,10 @@ def index():
 def contacts():
     return render_template('contacts.html')
 
+@app.route('/basket')
+def basket():
+    return render_template('basket.html')
+
 @app.route('/shop')
 def shop():
     books = [

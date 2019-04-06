@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Корзина -->
+
+<v-layout row wrap>
+	<v-flex xs12>
+	<div id="app"> 
+		<v-app id="inspire"> 
+			<v-form ref="form" v-model="valid" lazy-validation class="margin ma-5" class= "text-lxs-center"> 
+				<v-text-field v-model="name" :rules="nameRules" placeholder="Имя" 
+				required 
+				></v-text-field> 
+
+				<v-text-field v-model="email" :rules="emailRules" placeholder="Эл. почта"
+				required 
+				></v-text-field> 
+
+				<v-text-field v-model="email" :rules="Rules" placeholder="Номер телефона"
+				required 
+				></v-text-field> 
+
+
+
+				<div class="text-xs-center"> 
+					<v-btn round color="primary" dark>Отмена</v-btn> 
+					<v-btn round color="primary" dark>Купить</v-btn> 
+				</div> 
+			<v-form>
+		</v-app> 
+	</div>
+</v-flex>
+</v-layout>
+
+{% endblock %}
