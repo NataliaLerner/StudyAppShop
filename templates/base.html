@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <title>Example</title>
+  <title>Интернет магазин</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -11,7 +11,11 @@
 <body>
 	<div id="app">
 		<v-app>
-			<v-toolbar dark color="primary" app scroll-off-screen>
+
+
+			{% block menu %}{% endblock %}
+			
+			<v-toolbar dark color="primary" app scroll-off-screen clipped-left>
 
 				<v-flex flat xs12 sm6 md3>
 					<v-text-field label="Поиск" single-line color="white"></v-text-field>
@@ -37,7 +41,7 @@
 	        		</v-btn>
 	        		{% if 'user' in session.keys() %}
 	        			{% if session['user']['_access_lavel'] == 0 %}
-	        				<v-btn flat>Администрирование</v-btn>
+	        				<v-btn flat href="/admin">Администрирование</v-btn>
 	        			{% endif %}
 	        		{% endif %}
 	        		{% if 'user' in session.keys()%}
@@ -52,6 +56,8 @@
 	        	</v-toolbar-items>
 				
 			</v-toolbar>
+
+
 
 			<v-content>
 				{% block content %}{% endblock %}

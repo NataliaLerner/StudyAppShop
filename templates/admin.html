@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block menu %}
+        <v-navigation-drawer app clipped>
+            <v-list>
+                <v-list-tile>
+                    <v-list-tile-action>
+                        <v-icon>account_circle</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title>{{ session['user']['_user_name'] }}</v-list-tile-title>
+                </v-list-tile>
+
+                <v-list-group prepend-icon="settings_ethernet">
+                    <template v-slot:activator>
+                        <v-list-tile>
+                            <v-list-tile-title>Администрирование</v-list-tile-title>
+                        </v-list-tile>
+                    </template>
+
+                    <v-list-group no-action sub-group>
+                        <template v-slot:activator>
+                        <v-list-tile>
+                            <v-list-tile-title>Пользователи</v-list-tile-title>
+                        </v-list-tile>
+                        </template>
+
+                        <v-list-tile>
+                            <v-list-tile-title>Управление ролями</v-list-tile-title>
+                            <v-list-tile-action>
+                                <v-icon>perm_identity</v-icon>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                    </v-list-group>
+
+                    <v-list-group sub-group no-action>
+                        <template v-slot:activator>
+                            <v-list-tile>
+                                <v-list-tile-title>Товары</v-list-tile-title>
+                            </v-list-tile>
+                        </template>
+                        <v-list-tile>
+                            <v-list-tile-title>Изменение параметров товаров</v-list-tile-title>
+                            <v-list-tile-action>
+                                <v-icon>edit</v-icon>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                        <v-list-tile>
+                            <v-list-tile-title>Добавление товара</v-list-tile-title>
+                            <v-list-tile-action>
+                                <v-icon>plus_one</v-icon>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                    </v-list-group>
+
+                </v-list-group>
+            </v-list>
+        </v-navigation-drawer>
+{% endblock %}
+
+{% block content %}
+<h1>erlighileru</h1>
+{% endblock %}

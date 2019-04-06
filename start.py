@@ -38,6 +38,10 @@ def shop():
     count_shop = len(session['shopping'])
     return render_template('shop.html', count_shop = count_shop, books=books)
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
     oauth = OAuthSignIn.get_provider(provider)
