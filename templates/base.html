@@ -7,12 +7,13 @@
   <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
 </head>
 <body>
 	<div id="app">
 		<v-app>
-
-
+			
 			{% block menu %}{% endblock %}
 			
 			<v-toolbar dark color="primary" app scroll-off-screen clipped-left>
@@ -53,22 +54,19 @@
 	        			<v-icon>fab fa-google</v-icon>
 	        		</v-btn>
 	        		{% endif %}
-	        	</v-toolbar-items>
-				
+	        	</v-toolbar-items>				
 			</v-toolbar>
-
-
-
 			<v-content>
 				{% block content %}{% endblock %}
 			</v-content>
 		</v-app>
+
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+	
 	<script>
-		new Vue({ el: '#app' })
+		new Vue({ el: '#app' {% block data %}{% endblock %} 
+			  })
 	</script>
 </body>
 </html>

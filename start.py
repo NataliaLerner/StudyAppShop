@@ -22,7 +22,7 @@ def contacts():
 
 @app.route('/basket')
 def basket():
-    return render_template('basket.html')
+    return render_template('basket.html', e1=0)
 
 @app.route('/shop')
 def shop():
