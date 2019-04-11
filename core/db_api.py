@@ -63,7 +63,7 @@ class DbApi:
 		"""
 		Получение данных о пользователе из БД, если нет пользователя в БД, создает запись в БД
 		"""
-		query = """SELECT * FROM Users WHERE user_name = "{0}" AND e_mail = "{1}" """.format(user_name, e_mail)
+		query = """SELECT * FROM Users WHERE e_mail = "{0}" """.format(e_mail)
 		logger.info(query)
 		self._cur.execute(query)
 		res = self._cur.fetchall()
