@@ -1,8 +1,9 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 
-from core import ListBooks, User
+from core import ListBooks, Category
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
+import json
 
 import os, ssl
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
@@ -33,14 +34,35 @@ def shop():
     ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
     ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
     ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
 
-            ]
+    ]
     count_shop = len(session['shopping'])
     return render_template('shop.html', count_shop = count_shop, books=books)
 
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
+@app.route('/order_management')
+def order_management():
+    #global db
+    #c = db.get_categories("")
+    return render_template('order_management.html')
+
+@app.route('/category_management')
+def category_management():
+    global db
+    c = db.get_categories("")
+    return render_template('category_management.html', categories = json.dumps(
+        [{'category_id': k, 'name': v, 'short_name': e} for k,v,e in c], indent=4))
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):

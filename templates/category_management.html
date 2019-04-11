@@ -1,0 +1,61 @@
+{% extends "admin.html" %}
+
+{% block content %}
+<v-toolbar flat color="white">
+    <v-toolbar-title>Категории товаров</v-toolbar-title>
+</v-toolbar>
+
+<v-container>
+
+    <v-data-table :headers="headers"
+                  :items="categories"
+                  class="elevation-1">
+
+        <template v-slot:items="props">
+            <td class="text-xs-right">[[props.item.category_id]]</td>
+            <td class="text-xs-right">[[props.item.name]]</td>
+            <td class="text-xs-right">[[props.item.short_name]]</td>
+        </template>
+
+    </v-data-table>
+
+</v-container>
+
+<script>
+var categories = {{categories|safe}}
+var app = new Vue({
+  el: '#app',
+  delimiters: ['[[',']]'],
+  data () {
+    return {
+      headers: [
+        {
+          text: 'ID',
+          align: 'right',
+          sortable: false,
+          value: 'category_id'
+        },
+        {
+          text: 'Название',
+          align: 'right',
+          sortable: false,
+          value: 'name'
+        },
+        {
+          text: 'Краткое название',
+          align: 'right',
+          sortable: false,
+          value: 'short_name'
+        }
+      ],
+
+       categories
+
+    }
+  }
+})
+
+</script>
+
+
+{% endblock %}

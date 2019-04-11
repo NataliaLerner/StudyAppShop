@@ -4,7 +4,7 @@ import traceback
 
 from .config import DbSettings
 from . import log
-from .base_type import AccessLevel, User
+from .base_type import AccessLevel, User, Category
 
 logger = logging.getLogger(__name__)
 
@@ -83,3 +83,16 @@ class DbApi:
 		logger.info(query)
 		self._cur.execute(query)
 		return self._conn.insert_id()
+
+	@try_except
+	def get_categories(self, name_filter):
+		"""
+		"""
+		name_filter = "%" + name_filter + "%"
+		query = "SELECT * FROM Categories where name like '{0}'".format(name_filter)
+		logger.info(query)
+		self._cur.execute(query)
+		categories = self._cur.fetchall()
+		res = Category.ToListCategoryNT(categories)
+		return res
+
