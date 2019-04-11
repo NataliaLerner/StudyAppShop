@@ -1,6 +1,5 @@
-{% extends "admin.html" %}
-
-{% block content %}
+<div id="test">
+<template>
 <v-toolbar flat color="white">
     <v-toolbar-title>Категории товаров</v-toolbar-title>
 </v-toolbar>
@@ -21,10 +20,12 @@
 
 </v-container>
 
-<script>
+</template>
+</div>
+<script >
 var categories = {{categories|safe}}
-var app = new Vue({
-  el: '#app',
+var el = new Vue({
+  el: '#test',
   delimiters: ['[[',']]'],
   data () {
     return {
@@ -57,5 +58,3 @@ var app = new Vue({
 
 </script>
 
-
-{% endblock %}

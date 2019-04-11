@@ -23,8 +23,8 @@
                             </v-list-tile>
                         </template>
 
-                        <v-list-tile href="/order_management">
-                            <v-list-tile-title>Управление заказами</v-list-tile-title>
+                        <v-list-tile @click="onOrderManagement()">
+                            <v-list-tile-title >Управление заказами</v-list-tile-title>
                             <v-list-tile-action>
                                 <v-icon>shopping_cart</v-icon>
                             </v-list-tile-action>
@@ -67,7 +67,7 @@
                             </v-list-tile-action>
                         </v-list-tile>
 
-                        <v-list-tile href="/category_management">
+                        <v-list-tile @click="onCategoryManagement()">
                             <v-list-tile-title>Категории товаров</v-list-tile-title>
                             <v-list-tile-action>
                                 <v-icon>edit</v-icon>
@@ -79,6 +79,18 @@
             </v-list>
         </v-navigation-drawer>
 {% endblock %}
-
 {% block content %}
+
+<div id="content_admin"></div>
+
 {% endblock %}
+{% block data%}
+,methods: {
+    onOrderManagement: function(){
+      $('#content_admin').load('order_management')
+    },
+    onCategoryManagement: function(){
+    $('#content_admin').load('category_management')
+}
+  }
+{% endblock%}
