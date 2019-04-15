@@ -2,6 +2,8 @@
 {% block content %}
 <!-- Страница книги -->
 
-    <h1>TEST</h1>
+    <h1>{{ book.name }}</h1>
+    <p>{{ book.author }}</p>
+    <v-img src="{{ book.link_icon }}"/>
 
 {% endblock %}

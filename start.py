@@ -68,9 +68,10 @@ def show_info_card():
     print(request.args.get('show'))
     return redirect('/')#render_template('index.html', show = True if request.args.get('show') == 'False' else False)
 
-@app.route('/book')
-def bookinfo():
-    return render_template('bookinfo.html')
+@app.route('/book')#/<bookname>')
+def bookinfo():#bookname):
+    bbb = ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум")
+    return render_template('bookinfo.html', book = bbb)
 
 if __name__ == '__main__':
     #app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
