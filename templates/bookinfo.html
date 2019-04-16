@@ -7,7 +7,7 @@
 	        <v-img
 	          class="black--text"
 	          height="200px"
-	          src="{{ book.link_icon }}"
+              src="{{ book.link_icon }}"
 	        >
 	          <v-container fill-height fluid>
 	            <v-layout fill-height>
@@ -33,4 +33,12 @@
 	    </v-card>
     </v-layout>
 
-{% endblock %}
+{% endblock content %}
+
+{% block menu %}
+    <v-layout row wrap>
+        <v-container>
+            <p>blablabla nothing special</p>
+        </v-container>
+    </v-layout>
+{% endblock menu %}

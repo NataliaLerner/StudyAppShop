@@ -68,6 +68,7 @@ def show_info_card():
     print(request.args.get('show'))
     return redirect('/')#render_template('index.html', show = True if request.args.get('show') == 'False' else False)
 
+@app.route('/book')
 @app.route('/book/<bookid>')
 def bookinfo(bookid):
     #select from db where id=bookid
