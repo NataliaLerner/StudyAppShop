@@ -4,7 +4,7 @@
     <v-layout row wrap>
     	{% for book in books %}
 		<v-hover>
-		    <v-card class="mx-auto mt-3" width=300 href="/book/1">
+		    <v-card class="mx-auto mt-3" width=300 href="{{ url_for('bookinfo',bookid=book.id) }}">
 		      <v-img
 		        :aspect-ratio="16/9"
 		        src={{ book.link_icon }}
