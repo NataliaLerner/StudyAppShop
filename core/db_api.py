@@ -87,6 +87,7 @@ class DbApi:
 	@try_except
 	def get_categories(self, name_filter):
 		"""
+		селект категорий с фильтром по имени
 		"""
 		name_filter = "%" + name_filter + "%"
 		query = "SELECT * FROM Categories where name like '{0}'".format(name_filter)
@@ -95,4 +96,32 @@ class DbApi:
 		categories = self._cur.fetchall()
 		res = Category.ToListCategoryNT(categories)
 		return res
+
+	@try_except
+	@commit
+	def delete_categories(self, category_id):
+		"""
+		удаление категории по id
+		"""
+		query = "delete from Categories where category_id = '{0}'".format(category_id)
+		logger.info(query)
+		self._cur.execute(query)
+
+	@try_except
+	@commit
+	def create_categories(self, name, short_name):
+		"""
+		создание новой категории
+		ретурн: id созданной категории
+		"""
+		pname = 'sp_categories_01'
+		id = None
+		args = (id, name, short_name)
+		status = self._cur.callproc(pname,args)
+		id = self._cur.fetchone()
+		return id[0]
+
+
+
+
 
