@@ -36,9 +36,29 @@
 {% endblock content %}
 
 {% block menu %}
-    <v-layout row wrap>
-        <v-container>
-            <p>blablabla nothing special</p>
-        </v-container>
-    </v-layout>
+    <v-navigation-drawer app clipped>
+        <v-list>
+            <v-list-tile>
+                <v-list-tile-title>blablabla nothing special</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-title>second unnecessary thing</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-action>
+                    <v-icon>shopping_cart</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-title>add to cart?</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-title>or something else?</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-action>
+                    <v-icon>question_mark</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-title>who knows..</v-list-tile-title>
+            </v-list-tile>
+        </v-list>
+    </v-navigation-drawer>
 {% endblock menu %}
