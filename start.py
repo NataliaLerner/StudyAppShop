@@ -10,6 +10,7 @@ if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
     ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
+app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
 
 @app.route('/')
 def index():
@@ -67,7 +68,11 @@ def show_info_card():
     print(request.args.get('show'))
     return redirect('/')#render_template('index.html', show = True if request.args.get('show') == 'False' else False)
 
+@app.errorhandler(404)
+def pagenotfound(error):
+    return render_template('error404.html'), 404
+
 if __name__ == '__main__':
-    app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
+
     db = DbApi()
     app.run(debug=True, port = 3306)
