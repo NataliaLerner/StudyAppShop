@@ -5,6 +5,7 @@ from core import ListBooks, Category
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
 import json
+import ast
 
 import os, ssl
 
@@ -67,7 +68,6 @@ def admin():
 @app.route('/order_management')
 def order_management():
     #global db
-    #c = db.get_categories("")
     return render_template('order_management.html')
 
 @app.route('/category_management')
@@ -76,6 +76,22 @@ def category_management():
     c = db.get_categories("")
     return render_template('category_management.html', categories = json.dumps(
         [{'category_id': k, 'name': v, 'short_name': e} for k,v,e in c], indent=4))
+
+@app.route('/admin/api/categories/delete', methods=['POST'])
+def delete_category():
+    global db
+    category_id = request.json['category_id']
+    r = db.delete_categories(category_id)
+    return json.dumps({'result': True})
+
+@app.route('/admin/api/categories/create', methods=['POST'])
+def create_category():
+    global db
+    name = request.json[0]['name']
+    short_name = request.json[1]['short_name']
+    id = db.create_categories(name, short_name)
+    return json.dumps({'category_id': id}), 200
+
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
