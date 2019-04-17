@@ -117,6 +117,9 @@ class DbApi:
 	@try_except
 	@commit
 	def get_token(self, user_id):
+		"""
+		создание токена, запись в БД
+		"""
 		token = str(uuid.uuid1())
 		query = """CALL CreateToken("{0}", "{1}")""".format(token, user_id)
 		logger.info(query)
@@ -126,6 +129,9 @@ class DbApi:
 
 	@try_except
 	def get_create_date_token(self, token):
+		"""
+		получение даты создания токена по токену
+		"""
 		query = """SELECT token FROM ValidateAdmin WHERE token = {0}""".format(token)
 		logger.info(query)
 		self._cur.execute(query)
@@ -133,6 +139,9 @@ class DbApi:
 
 	@try_except
 	def is_valid_token(self, token):
+		"""
+		проверяет наличие токена в БД
+		"""
 		query = """SELECT * FROM ValidateAdmin WHERE token = {0}""".format(token)
 		logger.info(query)
 		self._cur.execute(query)
