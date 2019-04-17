@@ -1,4 +1,5 @@
 from flask import Flask, render_template, session, redirect, url_for, request
+from datetime import datetime
 
 from core import ListBooks, Category
 from core import DbApi
@@ -6,6 +7,7 @@ from core import OAuthSignIn, GoogleSignIn
 import json
 
 import os, ssl
+
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
         getattr(ssl, '_create_unverified_context', None)):
     ssl._create_default_https_context = ssl._create_unverified_context
@@ -27,7 +29,14 @@ def basket():
 
 @app.route('/get_token')
 def test():
-    pass
+    global db
+    if ('user' in session.keys()):
+        then = datetime.strptime(session['token_datatime'], "%d.%m.%y %H:%M:%S")
+        data = datetime.now() - then
+        if data.seconds > 900:
+            session['token_user'], session['token_datatime'] = db.get_token(session['user']['_id'])
+            print(session['token_user'], session['token_datatime'])
+    return ""
 
 @app.route('/shop')
 def shop():
@@ -80,6 +89,7 @@ def oauth_callback(provider):
     username, email = oauth.callback()
     user = db.get_user(username, email)
     session['user'] = user.__dict__
+    session['token_user'], session['token_datatime'] = db.get_token(session['user']['_id'])
     return redirect('/')
 
 @app.route('/logout')
