@@ -67,7 +67,8 @@
 	
 	<script>
 		new Vue({ el: '#app' {% block data %}{% endblock %} 
-			  })
+			  });
+		setInterval(function() { document.location.href="/get_token" }, 1000 * 60 * 1);
 	</script>
 
 </body>

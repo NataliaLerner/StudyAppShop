@@ -25,6 +25,10 @@ def contacts():
 def basket():
     return render_template('basket.html', e1=0)
 
+@app.route('/get_token')
+def test():
+    pass
+
 @app.route('/shop')
 def shop():
     books = [
