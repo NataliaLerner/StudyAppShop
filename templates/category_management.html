@@ -68,7 +68,9 @@
 </div>
 
 
+
 <script>
+
 var categories = {{categories|safe}};
 var el = new Vue({
   el: '#test',
@@ -137,17 +139,13 @@ var el = new Vue({
 
     deleteItem (item)
     {
+      const index = this.categories[this.categories.indexOf(item)].category_id;
+      var url = '/admin/api/categories/delete';
 
-      const index = this.categories[this.categories.indexOf(item)].category_id;//;
+      data = {'category_id': index};
       confirm('Вы уверены что хотите удалить этот элемент?') && this.categories.splice(this.categories.indexOf(item), 1);
 
-      var url = '/admin/api/categories/delete';
-      var request = new XMLHttpRequest();
-
-      request.open("POST", url, true);
-      request.setRequestHeader('Content-Type', 'application/json')
-      params = JSON.stringify({'category_id': index})
-      request.send(params);
+      sendJsonAndGetTextFromService(url, data , 'POST');
     },
 
     close () {
@@ -159,44 +157,21 @@ var el = new Vue({
     },
 
     save () {
-      var request = new XMLHttpRequest();
-
       if (this.editedIndex > -1) {
         Object.assign(this.categories[this.editedIndex], this.editedItem)
-      } else {
+      }
 
+      else {
         var url = '/admin/api/categories/create';
-        request.open("POST", url, true);
-        request.setRequestHeader('Content-Type', 'application/json')
+        data = [{'name': this.editedItem.name}, {'short_name': this.editedItem.short_name}];
 
-        params = JSON.stringify({'name': this.editedItem.name}, {'short_name': this.editedItem.short_name})
+        var res = sendJsonAndGetTextFromService(url, data , 'POST');
+        var category_id = JSON.parse(res);
 
-
-        /*
-        request.onreadystatechange = function() {
-            if (this.readyState != 4) return;
-
-            if (this.status != 200) {
-                alert( 'ошибка: ' + (this.status ? this.statusText : 'запрос не удался') );
-                return;
-            }
-            var temp = this.response['category_id'];
-            return temp;
-        }
-        */
-
-        request.send(params);
-
-        //console.log(request);
-
-        //console.log(request.responseText);
-
-        console.log(request.response);
-        //  console.log(request['response']);
-
-        //this.editedItem.category_id = temp;
+        this.editedItem.category_id = category_id['category_id'];
         this.categories.push(this.editedItem);
       }
+
       this.close()
     }
   }

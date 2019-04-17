@@ -74,9 +74,9 @@ def delete_category():
 @app.route('/admin/api/categories/create', methods=['POST'])
 def create_category():
     global db
-    name = request.json['name']
-    #short_name = request.json['short_name']
-    id = db.create_categories(name, short_name=' ')
+    name = request.json[0]['name']
+    short_name = request.json[1]['short_name']
+    id = db.create_categories(name, short_name)
     return json.dumps({'category_id': id}), 200
 
 
