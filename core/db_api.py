@@ -124,7 +124,6 @@ class DbApi:
 		query = """CALL CreateToken("{0}", "{1}")""".format(token, user_id)
 		logger.info(query)
 		self._cur.execute(query)
-		logger.info(self._cur.fetchall())
 		return token, datetime.now().strftime("%d.%m.%y %H:%M:%S")
 
 	@try_except
@@ -132,7 +131,7 @@ class DbApi:
 		"""
 		получение даты создания токена по токену
 		"""
-		query = """SELECT token FROM ValidateAdmin WHERE token = {0}""".format(token)
+		query = """SELECT token FROM ValidateAdmin WHERE token = '{0}'""".format(token)
 		logger.info(query)
 		self._cur.execute(query)
 		return self._cur.fetchall()[0]
@@ -142,7 +141,7 @@ class DbApi:
 		"""
 		проверяет наличие токена в БД
 		"""
-		query = """SELECT * FROM ValidateAdmin WHERE token = {0}""".format(token)
+		query = """SELECT * FROM ValidateAdmin WHERE token = '{0}'""".format(token)
 		logger.info(query)
 		self._cur.execute(query)
 		if len(self._cur.fetchall()) > 0:
@@ -151,6 +150,7 @@ class DbApi:
 			return False
 
 	@try_except
+	@valid_admin
 	@commit
 	def delete_categories(self, category_id):
 		"""
