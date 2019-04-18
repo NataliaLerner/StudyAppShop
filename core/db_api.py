@@ -121,6 +121,12 @@ class DbApi:
 		id = self._cur.fetchone()
 		return id[0]
 
+	@try_except
+	@commit
+	def update_categories(self, id, name, short_name):
+		pname = 'sp_categories_03'
+		args = (id, name, short_name)
+		status = self._cur.callproc(pname,args)
 
 
 

@@ -79,6 +79,14 @@ def create_category():
     id = db.create_categories(name, short_name)
     return json.dumps({'category_id': id}), 200
 
+@app.route('/admin/api/categories/update', methods=['POST'])
+def update_category():
+    global db
+    id = request.json[0]['category_id']
+    name = request.json[1]['name']
+    short_name = request.json[2]['short_name']
+    id = db.update_categories(id, name, short_name)
+    return json.dumps({'result': True})
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):

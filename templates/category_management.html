@@ -158,6 +158,11 @@ var el = new Vue({
 
     save () {
       if (this.editedIndex > -1) {
+        var url = '/admin/api/categories/update';
+        data = [{'category_id': this.editedItem.category_id}, {'name': this.editedItem.name}, {'short_name': this.editedItem.short_name}];
+
+        var res = sendJsonAndGetTextFromService(url, data , 'POST');
+
         Object.assign(this.categories[this.editedIndex], this.editedItem)
       }
 
