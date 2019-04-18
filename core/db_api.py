@@ -1,6 +1,9 @@
 import pymysql
 import logging
 import traceback
+import uuid
+from datetime import datetime
+from flask import session
 
 from .config import DbSettings
 from . import log
@@ -58,6 +61,20 @@ class DbApi:
 			return res
 		return wrapper
 
+	def valid_admin(function):
+		def wrapper(*args, **kwargs):
+			if 'token_user' in session.keys():
+				if args[0].is_valid_token(session['token_user']):
+					res = function(*args, **kwargs)
+					return res
+				else:
+					raise Exception("Токен, переданный с запросом не валидный!!!")
+					return None
+			else:
+				raise Exception("Токен, переданный с запросом не валидный!!!")
+				return None
+		return wrapper
+
 	@try_except
 	def get_user(self, user_name, e_mail):
 		"""
@@ -98,6 +115,42 @@ class DbApi:
 		return res
 
 	@try_except
+	@commit
+	def get_token(self, user_id):
+		"""
+		создание токена, запись в БД
+		"""
+		token = str(uuid.uuid1())
+		query = """CALL CreateToken("{0}", "{1}")""".format(token, user_id)
+		logger.info(query)
+		self._cur.execute(query)
+		return token, datetime.now().strftime("%d.%m.%y %H:%M:%S")
+
+	@try_except
+	def get_create_date_token(self, token):
+		"""
+		получение даты создания токена по токену
+		"""
+		query = """SELECT token FROM ValidateAdmin WHERE token = '{0}'""".format(token)
+		logger.info(query)
+		self._cur.execute(query)
+		return self._cur.fetchall()[0]
+
+	@try_except
+	def is_valid_token(self, token):
+		"""
+		проверяет наличие токена в БД
+		"""
+		query = """SELECT * FROM ValidateAdmin WHERE token = '{0}'""".format(token)
+		logger.info(query)
+		self._cur.execute(query)
+		if len(self._cur.fetchall()) > 0:
+			return True
+		else:
+			return False
+
+	@try_except
+	@valid_admin
 	@commit
 	def delete_categories(self, category_id):
 		"""

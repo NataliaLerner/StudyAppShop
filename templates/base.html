@@ -62,6 +62,7 @@
 			<v-content>
 				{% block content %}{% endblock %}
 			</v-content>
+			<div id="token"></div>
 		</v-app>
 
 	</div>
@@ -69,7 +70,8 @@
 	
 	<script>
 		new Vue({ el: '#app' {% block data %}{% endblock %} 
-			  })
+			  });
+		setInterval(function() { $('#token').load('get_token') }, 1000);
 	</script>
 
 </body>
