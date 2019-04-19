@@ -77,7 +77,10 @@ def bookinfo(bookid):
     bbb = books[bookid-1]
     return render_template('bookinfo.html', book = bbb)
 
+@app.errorhandler(404)
+def pagenotfound(error):
+    return render_template('error404.html'), 404
+
 if __name__ == '__main__':
-    #app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
     db = DbApi()
     app.run(debug=True, port = 3306)
