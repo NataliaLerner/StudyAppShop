@@ -4,6 +4,7 @@ from core import ListBooks, User
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
 
+
 import os, ssl
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
         getattr(ssl, '_create_unverified_context', None)):
@@ -26,12 +27,12 @@ def basket():
     return render_template('basket.html')
 
 books = [
-    ListBooks(id=1,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети1", author="Таненбаум"),
-    ListBooks(id=2,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети2", author="Таненбаум"),
-    ListBooks(id=3,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети3", author="Таненбаум"),
-    ListBooks(id=4,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети4", author="Таненбаум"),
-    ListBooks(id=5,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети5", author="Таненбаум"),
-    ListBooks(id=6,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети6", author="Таненбаум"),
+    ListBooks(id=1,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети1", author="Таненбаум", description="blablabla", price="123", quantity="15", year="1812", category="Фантастика"),
+    ListBooks(id=2,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети2", author="Таненбаум", description="фартук в масле оливье", price="262", quantity="88", year="1990", category="Поэзия"),
+    ListBooks(id=3,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети3", author="Таненбаум", description="овадлдчижрии", price="3446", quantity="34754", year="2002", category="Детские"),
+    ListBooks(id=4,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети4", author="Таненбаум", description="Мы идем в тишине по убитой весне", price="46", quantity="1", year="1492", category="Приключения"),
+    ListBooks(id=5,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети5", author="Таненбаум", description="Во имя Костикова, ИП и святого Романенкова", price="666", quantity="15", year="1", category="Религия"),
+    ListBooks(id=6,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети6", author="Таненбаум", description="Самосвал песка", price="1488", quantity="15", year="2020", category="Хоррор"),
 
             ]
 
@@ -70,9 +71,8 @@ def show_info_card():
     print(request.args.get('show'))
     return redirect('/')#render_template('index.html', show = True if request.args.get('show') == 'False' else False)
 
-@app.route('/book')
-@app.route('/book/<int:bookid>')
-def bookinfo(bookid):
+@app.route('/book/<int:bookid>/<string:bookname>')
+def bookinfo(bookid, bookname):
     #select from db where id=bookid
     bbb = books[bookid-1]
     return render_template('bookinfo.html', book = bbb)
@@ -81,6 +81,8 @@ def bookinfo(bookid):
 def pagenotfound(error):
     return render_template('error404.html'), 404
 
+
 if __name__ == '__main__':
+
     db = DbApi()
     app.run(debug=True, port = 3306)

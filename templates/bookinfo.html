@@ -20,17 +20,18 @@
                             <h2 align="left">{{ book.name }}</h2>
                         </span>
                         <div class="d-flex">
-                            {{ book.author }}
+                            {{ book.author }}<br>
+                            Категория: {{ book.category  }}
                         </div>
 
                     </div>
                     <v-card dark color="light-blue" width="200px">
                         <v-flex xs12 align-content-left>
-                            <h1>Доступно: 1</h1>
+                            <h1>Доступно: {{ book.quantity }}</h1>
                         </v-flex>
 
                         <v-flex xs6 align-content-center>
-                            <h1>60₽</h1>
+                            <h1>{{ book.price }}₽</h1>
                         </v-flex>
                         <v-btn dark-color="primary">В корзину</v-btn>
                     </v-card>
@@ -38,13 +39,8 @@
               <v-flex xs12>
                     <p align="left">
                     lorem ipsum dolor sit amet..<br>
-                    i don't know it at all, so there will be some random symbols<br>
-                    djklzfhlkbfldknvkbndblkbnbdf
-                    bdfnkbnfdbkldbnfdklnbllsdbzlgndzlgnbrhgoizdhnglndlfngbdnfgbldfnhfdjdf
-                    jgfjxfjgjcfjfjkjddvhndghvksvdlghvlskghslrhgskhgbghkldfbghblfksghb f
-                    sdhbihdr hjolsdrhjosdfj;h oo;rih n oisr jshoijsbrioej;jaoroighnaihiughkfhdgo;afdh
-                    adabifnghbnioadgonbadogah
-                    gg {{ book.id }}
+                    {{ book.description }}<br>
+                        Год издания: {{ book.year }}
                 </p>
               </v-flex>
             </v-layout>
