@@ -37,9 +37,8 @@
                             <v-list-tile-title>Пользователи</v-list-tile-title>
                         </v-list-tile>
                         </template>
-
-                        <v-list-tile>
-                            <v-list-tile-title>Управление ролями</v-list-tile-title>
+                        <v-list-tile @click="onUsersManagement()">
+                            <v-list-tile-title>Управление пользователями</v-list-tile-title>
                             <v-list-tile-action>
                                 <v-icon>perm_identity</v-icon>
                             </v-list-tile-action>
@@ -80,17 +79,24 @@
         </v-navigation-drawer>
 {% endblock %}
 {% block content %}
-
 <div id="content_admin"></div>
+
+<script>
+    setInterval(function() { $('#token').load('get_token') }, 1000);
+</script>
 
 {% endblock %}
 {% block data%}
 ,methods: {
     onOrderManagement: function(){
-      $('#content_admin').load('order_management')
+        $('#content_admin').load('order_management')
     },
     onCategoryManagement: function(){
-    $('#content_admin').load('category_management')
-}
+        $('#content_admin').load('category_management')
+    },
+    onUsersManagement: function(){
+        $('#content_admin').load('users_management')
+    }
+
   }
 {% endblock%}

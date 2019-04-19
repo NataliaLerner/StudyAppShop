@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 from datetime import datetime
 
-from core import ListBooks, Category
+from core import ListBooks, Category, User
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
 import json
@@ -74,15 +74,7 @@ def order_management():
 def category_management():
     global db
     c = db.get_categories("")
-    return render_template('category_management.html', categories = json.dumps(
-        [{'category_id': k, 'name': v, 'short_name': e} for k,v,e in c], indent=4))
-
-@app.route('/admin/api/categories/delete', methods=['POST'])
-def delete_category():
-    global db
-    category_id = request.json['category_id']
-    r = db.delete_categories(category_id)
-    return json.dumps({'result': True})
+    return render_template('category_management.html', categories = json.dumps(Category.ToMap(c), indent=4))
 
 @app.route('/admin/api/categories/create', methods=['POST'])
 def create_category():
@@ -98,8 +90,38 @@ def update_category():
     id = request.json[0]['category_id']
     name = request.json[1]['name']
     short_name = request.json[2]['short_name']
-    id = db.update_categories(id, name, short_name)
+    db.update_categories(id, name, short_name)
     return json.dumps({'result': True})
+
+@app.route('/admin/api/categories/delete', methods=['POST'])
+def delete_category():
+    global db
+    category_id = request.json['category_id']
+    r = db.delete_categories(category_id)
+    return json.dumps({'result': True})
+
+@app.route('/users_management')
+def users_management():
+    global db
+    u = db.get_users()
+    return render_template('users_management.html', users = json.dumps(User.ToMap(u), indent=4))
+
+@app.route('/admin/api/users/update', methods=['POST'])
+def update_user():
+    global db
+    id = request.json[0]['user_id']
+    access = request.json[1]['access_level']
+    u = db.update_user(id, access)
+    return json.dumps({'result': True})
+
+
+@app.route('/admin/api/users/delete', methods=['POST'])
+def delete_user():
+    global db
+    user_id = request.json['user_id']
+    r = db.delete_user(user_id)
+    return json.dumps({'result': True})
+
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):

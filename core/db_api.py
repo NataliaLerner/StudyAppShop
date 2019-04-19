@@ -91,6 +91,36 @@ class DbApi:
 			return User(id_, user_name, e_mail, None, AccessLevel.USER)
 
 	@try_except
+	@valid_admin
+	def get_users(self):
+		"""
+		to do: добавить фильтры
+		"""
+		query = "select * from Users"
+		self._cur.execute(query)
+		users = self._cur.fetchall()
+		res = User.ToListUsersNT(users)
+		return res
+
+
+	@try_except
+	@valid_admin
+	@commit
+	def delete_user(self, user_id):
+		query = "delete from Users where id = '{0}'".format(user_id)
+		logger.info(query)
+		self._cur.execute(query)
+
+	@try_except
+	@valid_admin
+	@commit
+	def update_user(self, user_id, access_level):
+		pname = 'sp_users_03'
+		args = (user_id, access_level)
+		status = self._cur.callproc(pname,args)
+
+
+	@try_except
 	@commit
 	def set_user(self, user_name, e_mail, access_level = AccessLevel.USER):
 		"""
@@ -102,6 +132,7 @@ class DbApi:
 		return self._conn.insert_id()
 
 	@try_except
+	@valid_admin
 	def get_categories(self, name_filter):
 		"""
 		селект категорий с фильтром по имени
@@ -161,6 +192,7 @@ class DbApi:
 		self._cur.execute(query)
 
 	@try_except
+	@valid_admin
 	@commit
 	def create_categories(self, name, short_name):
 		"""
@@ -175,6 +207,7 @@ class DbApi:
 		return id[0]
 
 	@try_except
+	@valid_admin
 	@commit
 	def update_categories(self, id, name, short_name):
 		pname = 'sp_categories_03'

@@ -10,7 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='ServiceHelper.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='ServiceHelper.js') }}"></script>
 
 </head>
 <body>
@@ -71,7 +71,7 @@
 	<script>
 		new Vue({ el: '#app' {% block data %}{% endblock %} 
 			  });
-		setInterval(function() { $('#token').load('get_token') }, 1000);
+
 	</script>
 
 </body>
