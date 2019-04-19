@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Страница книги -->
+
+    <v-layout row wrap>
+	    <v-card class="mx-auto mt-3" width=800>
+	        <v-img
+	          class="black--text"
+	          height="200px"
+              src="{{ book.link_icon }}"
+	        >
+	          <v-container fill-height fluid>
+	            <v-layout fill-height>
+	              <v-flex xs12 align-center flexbox>
+	                <h1>{{ book.name }}</h1>
+                    <p>{{ book.author }}</p>
+	              </v-flex>
+	            </v-layout>
+	          </v-container>
+	        </v-img>
+	        <v-card-actions>
+                <p>
+                    lorem ipsum dolor sit amet..<br>
+                    i don't know it at all, so there will be some random symbols<br>
+                    djklzfhlkbfldknvkbndblkbnbdf
+                    bdfnkbnfdbkldbnfdklnbllsdbzlgndzlgnbrhgoizdhnglndlfngbdnfgbldfnhfdjdf
+                    jgfjxfjgjcfjfjkjddvhndghvksvdlghvlskghslrhgskhgbghkldfbghblfksghb f
+                    sdhbihdr hjolsdrhjosdfj;h oo;rih n oisr jshoijsbrioej;jaoroighnaihiughkfhdgo;afdh
+                    adabifnghbnioadgonbadogah
+                    gg {{ book.id }}
+                </p>
+	        </v-card-actions>
+	    </v-card>
+    </v-layout>
+
+{% endblock content %}
+
+{% block menu %}
+    <v-navigation-drawer app clipped>
+        <v-list>
+            <v-list-tile>
+                <v-list-tile-title>blablabla nothing special</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-title>second unnecessary thing</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-action>
+                    <v-icon>shopping_cart</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-title>add to cart?</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-title>or something else?</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile>
+                <v-list-tile-action>
+                    <v-icon>question_mark</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-title>who knows..</v-list-tile-title>
+            </v-list-tile>
+        </v-list>
+    </v-navigation-drawer>
+{% endblock menu %}

@@ -25,17 +25,19 @@ def contacts():
 def basket():
     return render_template('basket.html')
 
-@app.route('/shop')
-def shop():
-    books = [
-    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
-    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
-    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
-    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
-    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
-    ListBooks(link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети", author="Таненбаум"),
+books = [
+    ListBooks(id=1,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети1", author="Таненбаум"),
+    ListBooks(id=2,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети2", author="Таненбаум"),
+    ListBooks(id=3,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети3", author="Таненбаум"),
+    ListBooks(id=4,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети4", author="Таненбаум"),
+    ListBooks(id=5,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети5", author="Таненбаум"),
+    ListBooks(id=6,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети6", author="Таненбаум"),
 
             ]
+
+@app.route('/shop')
+def shop():
+
     count_shop = len(session['shopping'])
     return render_template('shop.html', count_shop = count_shop, books=books)
 
@@ -68,11 +70,17 @@ def show_info_card():
     print(request.args.get('show'))
     return redirect('/')#render_template('index.html', show = True if request.args.get('show') == 'False' else False)
 
+@app.route('/book')
+@app.route('/book/<int:bookid>')
+def bookinfo(bookid):
+    #select from db where id=bookid
+    bbb = books[bookid-1]
+    return render_template('bookinfo.html', book = bbb)
+
 @app.errorhandler(404)
 def pagenotfound(error):
     return render_template('error404.html'), 404
 
 if __name__ == '__main__':
-
     db = DbApi()
     app.run(debug=True, port = 3306)

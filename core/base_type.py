@@ -1,7 +1,7 @@
 from collections import namedtuple
 from enum import IntEnum
 
-ListBooks = namedtuple('listBooks', 'link_icon name author')
+ListBooks = namedtuple('listBooks', 'id link_icon name author')
 
 class AccessLevel(IntEnum):
 	ADMIN = 0
