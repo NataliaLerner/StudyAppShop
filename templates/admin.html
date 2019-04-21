@@ -52,17 +52,10 @@
                             </v-list-tile>
                         </template>
 
-                        <v-list-tile>
-                            <v-list-tile-title>Изменение параметров товаров</v-list-tile-title>
+                        <v-list-tile @click="managementOfGoods()">
+                            <v-list-tile-title>Управление товарами</v-list-tile-title>
                             <v-list-tile-action>
                                 <v-icon>edit</v-icon>
-                            </v-list-tile-action>
-                        </v-list-tile>
-
-                        <v-list-tile>
-                            <v-list-tile-title>Добавление товара</v-list-tile-title>
-                            <v-list-tile-action>
-                                <v-icon>plus_one</v-icon>
                             </v-list-tile-action>
                         </v-list-tile>
 
@@ -96,6 +89,9 @@
     },
     onUsersManagement: function(){
         $('#content_admin').load('users_management')
+    },
+    managementOfGoods: function(){
+        $('#content_admin').load('management_of_goods')
     }
 
   }

@@ -47,6 +47,138 @@ class Book:
 	def toListBooks(self):
 		pass
 
+class Goods:
+	_id 			= None
+	_full_name 		= None
+	_short_name 	= None
+	_descr 			= None
+	_price 			= None
+	_available 		= False
+	_count 			= None
+	_year 			= None
+	_language 		= None
+	_manufacture 	= None
+	_category 		= None
+	_images 		= []
+
+	def __init__(self, _id, full_name, short_name, descr, price, available, count, year, 
+		language, manufacture, category, images = []):
+		self._id 			=  _id
+		self._full_name 	= full_name
+		self._short_name 	= short_name
+		self._descr 		= descr
+		self._price 		= price
+		self._available 	= available
+		self._count 		= count
+		self._year 			= year
+		self._language 		= language
+		self._manufacture 	= manufacture
+		self._category 		= category
+		self._images 		= images
+
+	def to_dict(self):
+		res = {}
+		res['_id'] 			= self._id
+		res['_full_name'] 	= self._full_name
+		res['_short_name'] 	= self._short_name
+		res['_descr'] 		= self._descr
+		res['_price'] 		= self._price
+		res['_available'] 	= self._available
+		res['_count'] 		= self._count
+		res['_year'] 		= self._year
+		res['_language'] 	= self._language.to_dict()
+		res['_manufacture'] = self._manufacture.to_dict()
+		res['_category'] 	= self._category.to_dict()
+		res['_images'] 		= []
+		for i in self._images:
+			res['_images'].append(i.to_dict())
+		return res
+		#res = self.__dict__
+		#print(self._language)
+		#res['_language'] = self._language.__dict__
+		#res['_manufacture'] = self._manufacture.__dict__
+		#res['_category'] = self._category.__dict__
+		#for i in range(len(res['_images'])):
+		#	res['_images'][i] = self._images[i].__dict__
+		#	res['_images'][i]['_image_type'] = self._images[i]['_image_type'].__dict__
+
+	def ToMap(goods):
+		for i in goods:
+			print(i.to_dict())
+		return [ a.to_dict() for a in goods]
+
+class Language:
+	_id = None 
+	_name = None
+	_short_name = None
+
+	def __init__(self, _id, name, short_name):
+		self._id = _id
+		self._name = name
+		self._short_name = short_name
+
+	def to_dict(self):
+		res = {}
+		res['_id'] 			= self._id
+		res['_name'] 		= self._name
+		res['_short_name'] 	= self._short_name
+		return res
+
+class Manufacture:
+	_id = None 
+	_name = None
+	_short_name = None
+
+	def __init__(self, _id, name, short_name):
+		self._id = _id
+		self._name = name
+		self._short_name = short_name
+
+	def to_dict(self):
+		res = {}
+		res['_id'] 			= self._id
+		res['_name'] 		= self._name
+		res['_short_name'] 	= self._short_name
+		return res
+
+class ImageGoods:
+	_id = None
+	_name = None
+	_short_name = None
+	_path = None
+	_image_type = None
+
+	def __init__(self, _id, name, short_name, path, image_type):
+		self._id = _id
+		self._name = name
+		self._short_name = short_name
+		self._path = path
+		self._image_type = image_type
+
+	def to_dict(self):
+		res = {}
+		res['_id'] 			= self._id
+		res['_name'] 		= self._name
+		res['_short_name'] 	= self._short_name
+		res['_path'] 		= self._path
+		res['_image_type'] 	= self._image_type.to_dict()
+		return res
+
+class ImageType:
+	_id = None
+	_descr = None
+
+	def __init__(self, _id, descr):
+		self._id = _id
+		self._descr = descr
+
+	def to_dict(self):
+		res = {}
+		res['_id'] 			= self._id
+		res['_descr'] 		= self._descr
+		return res
+
+
 class Category:
 
 	__category_id = None
@@ -57,6 +189,13 @@ class Category:
 		self.__id = category_id
 		self.__name = name
 		self.__short_name = short_name
+
+	def to_dict(self):
+		res = {}
+		res['_id'] 			= self.__id
+		res['_name'] 		= self.__name
+		res['_short_name'] 	= self.__short_name
+		return res
 
 	def ToListCategoryNT(categories):
 		res = []

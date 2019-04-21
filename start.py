@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 from datetime import datetime
 
-from core import ListBooks, Category, User
+from core import ListBooks, Category, User, Goods
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
 import json
@@ -69,6 +69,15 @@ def category_management():
     global db
     c = db.get_categories("")
     return render_template('category_management.html', categories = json.dumps(Category.ToMap(c), indent=4))
+
+@app.route('/management_of_goods')
+def management_of_goods():
+    global db
+    g = db.get_goods()
+    print(g)
+    js = Goods.ToMap(g)
+    print(js)
+    return render_template('management_of_goods.html', goods = json.dumps(js, indent=4))
 
 @app.route('/admin/api/categories/create', methods=['POST'])
 def create_category():

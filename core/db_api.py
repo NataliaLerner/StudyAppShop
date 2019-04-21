@@ -7,7 +7,7 @@ from flask import session
 
 from .config import DbSettings
 from . import log
-from .base_type import AccessLevel, User, Category
+from .base_type import AccessLevel, User, Category, ImageType, ImageGoods, Language, Manufacture, Goods
 
 logger = logging.getLogger(__name__)
 
@@ -144,6 +144,52 @@ class DbApi:
 		categories = self._cur.fetchall()
 		res = Category.ToListCategoryNT(categories)
 		return res
+
+	@try_except
+	@valid_admin
+	def get_goods(self):
+		"""
+		"""
+		query = """SELECT Products.product_id, Products.name, Products.short_name,\
+		 Products.description, Products.price, Products.is_available, Products.quantity,\
+		  Products.publish_year, Languages.language_id, Languages.name, Languages.short_name,\
+		   Manufactures.manufacturer_id, Manufactures.name, Manufactures.short_name, Categories.category_id,\
+		    Categories.name, Categories.short_name FROM Products LEFT JOIN Languages ON \
+		    Products.language_id = Languages.language_id LEFT JOIN Manufactures ON\
+		     Products.manufacturer_id = Manufactures.manufacturer_id LEFT JOIN Categories ON\
+		      Products.category_id = Categories.category_id"""
+		logger.info(query)
+		self._cur.execute(query)
+		goods = self._cur.fetchall()
+		res = []
+		for g in goods:
+			language = Language(g[8], g[9], g[10])
+			manufacture = Manufacture(g[11], g[12], g[13])
+			category = Category(g[14], g[15], g[16])
+			temp = Goods(g[0], g[1], g[2], g[3], g[4], g[5], g[6], g[7], language, manufacture, category, self.get_images_for_id_goods(g[0]))
+			res.append(temp)
+		return res
+
+	@try_except
+	@valid_admin
+	def get_images_for_id_goods(self, _id):
+		"""
+		"""
+		query = """SELECT Images.image_id, Images.name, Images.short_name,\
+		 Images.path, ImageTypes.image_type_id, ImageTypes.desciption FROM\
+		  ProductImages LEFT JOIN Images ON ProductImages.image_id = Images.image_id\
+		   LEFT JOIN ImageTypes ON Images.image_type_id = ImageTypes.image_type_id WHERE\
+		    ProductImages.product_id = {0}""".format(_id)
+		logger.info(query)
+		self._cur.execute(query)
+		images = self._cur.fetchall()
+		res = []
+		for i in images:
+			type_image = ImageType(i[4], i[5])
+			image = ImageGoods(i[0], i[1], i[2], i[3], type_image)
+			res.append(image)
+		return res
+
 
 	@try_except
 	@commit
