@@ -1,7 +1,7 @@
 from collections import namedtuple
 from enum import IntEnum
 
-ListBooks = namedtuple('listBooks', 'link_icon name author')
+ListBooks = namedtuple('listBooks', 'id link_icon name author description price quantity year category')
 CategoryNT = namedtuple('categories', 'category_id name short_name')
 UserNT = namedtuple('users', 'user_id name e_mail number_phone access_level')
 

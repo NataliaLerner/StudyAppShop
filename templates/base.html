@@ -44,7 +44,7 @@
 	          			</v-badge>
 	        		</v-btn>
 	        		{% if 'user' in session.keys() %}
-	        			{% if session['user']['_access_lavel'] == 0 %}
+	        			{% if session['user']['_access_level'] == 0 %}
 	        				<v-btn flat href="/admin">Администрирование</v-btn>
 	        			{% endif %}
 	        		{% endif %}
