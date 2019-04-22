@@ -11,8 +11,14 @@
 <body>
 	<div id="app">
 		<v-app>
-
-
+<!--
+            <v-overlay :value="overlay404">
+                <v-btn icon @click="overlay = false">
+                    <p>404</p>
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </v-overlay>
+-->
 			{% block menu %}{% endblock %}
 			
 			<v-toolbar dark color="primary" app scroll-off-screen clipped-left>

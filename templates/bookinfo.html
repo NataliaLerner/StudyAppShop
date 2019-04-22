@@ -2,79 +2,56 @@
 {% block content %}
 <!-- Страница книги -->
 
+    <v-dialog v-model="dlg" scrollable max-width="1000px">
+    <template v-slot:activator="{on}">
+        <v-btn color="primary" dark v-on="on">Open</v-btn>
+    </template>
     <v-container grid-list-md text-xs-center>
         <v-card>
-            <div style="margin: 15px;">
-            <v-layout row wrap>
-                <v-flex :key="`6${2}`" xs6>
+            <v-card-text>
+                <v-layout row wrap>
+                    <v-flex :key="`6${2}`" xs6>
 
-                    <v-img
-                          style="width:200px;"
-                          src="{{ book.link_icon }}"
-                        ></v-img>
+                        <v-img
+                              style="width:200px;"
+                              src="{{ book.link_icon }}"
+                            ></v-img>
 
-              </v-flex>
-                <v-flex :key="`6${1}`" xs6>
-                    <div>
-                        <span class="headline">
-                            <h2 align="left">{{ book.name }}</h2>
-                        </span>
-                        <div class="d-flex">
-                            {{ book.author }}<br>
-                            Категория: {{ book.category  }}
+                  </v-flex>
+                    <v-flex :key="`6${1}`" xs6>
+                        <div>
+                            <span class="headline">
+                                <h2 align="left">{{ book.name }}</h2>
+                            </span>
+                            <div class="d-flex">
+                                {{ book.author }}<br>
+                                Категория: {{ book.category  }}
+                            </div>
+
                         </div>
+                        <v-card dark color="light-blue" width="200px">
+                            <v-flex xs12 align-content-left>
+                                <h1>Доступно: {{ book.quantity }}</h1>
+                            </v-flex>
 
-                    </div>
-                    <v-card dark color="light-blue" width="200px">
-                        <v-flex xs12 align-content-left>
-                            <h1>Доступно: {{ book.quantity }}</h1>
-                        </v-flex>
-
-                        <v-flex xs6 align-content-center>
-                            <h1>{{ book.price }}₽</h1>
-                        </v-flex>
-                        <v-btn dark-color="primary">В корзину</v-btn>
-                    </v-card>
-              </v-flex>
-              <v-flex xs12>
-                    <p align="left">
-                    lorem ipsum dolor sit amet..<br>
-                    {{ book.description }}<br>
-                        Год издания: {{ book.year }}
-                </p>
-              </v-flex>
-            </v-layout>
-            </div>
+                            <v-flex xs6 align-content-center>
+                                <h1>{{ book.price }}₽</h1>
+                            </v-flex>
+                            <v-btn dark-color="primary">В корзину</v-btn>
+                        </v-card>
+                  </v-flex>
+                  <v-flex xs12>
+                        <p align="left">
+                        lorem ipsum dolor sit amet..<br>
+                        {{ book.description }}<br>
+                            Год издания: {{ book.year }}
+                    </p>
+                  </v-flex>
+                </v-layout>
+            </v-card-text>
         </v-card>
     </v-container>
+    </v-dialog>
 
 
 {% endblock content %}
-
-{% block menu %}
-    <v-navigation-drawer app clipped>
-        <v-list>
-            <v-list-tile>
-                <v-list-tile-title>blablabla nothing special</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile>
-                <v-list-tile-title>second unnecessary thing</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile>
-                <v-list-tile-action>
-                    <v-icon>shopping_cart</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-title>add to cart?</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile>
-                <v-list-tile-title>or something else?</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile>
-                <v-list-tile-action>
-                    <v-icon>question_mark</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-title>who knows..</v-list-tile-title>
-            </v-list-tile>
-        </v-list>
-    </v-navigation-drawer>
-{% endblock menu %}
