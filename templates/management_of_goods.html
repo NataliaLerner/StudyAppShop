@@ -15,12 +15,37 @@
 					<v-card-text>
 						<v-container grid-list-md>
 							<v-layout wrap>
-								<v-flex xs12 sm6 md4>
-									<v-text-field v-model="editedItem.name" label="Название"></v-text-field>
+								<v-flex xs12 sm12 md12>
+									<v-text-field v-model="editedItem._full_name" label="Наименование товара"></v-text-field>
 								</v-flex>
-								<v-flex xs12 sm6 md4>
-									<v-text-field v-model="editedItem.short_name" label="Краткое название"></v-text-field>
+								<v-flex xs12 sm12 md12>
+									<v-text-field v-model="editedItem._full_name" label="Короткое наименование товара"></v-text-field>
 								</v-flex>
+                <v-flex xs12 sm12 md12>
+                  <v-textarea v-model="editedItem._descr" label="Описание"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field v-model="editedItem._price" label="Цена" type="number" suffix="₽"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-checkbox v-model="editedItem._available" label="Доступность"></v-checkbox>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field v-model="editedItem._count" label="Количество" type="number" suffix="ШТ"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field v-model="editedItem._year" label="Год" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <v-select v-model="editedItem._language._name" :items="language" label="Язык"></v-select>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <v-select v-model="editedItem._manufacture._name" :items="manufacture" label="Производитель"></v-select>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <v-select v-model="editedItem._category._name" :items="category" label="Категория"></v-select>
+                </v-flex>
+
 							</v-layout>
 						</v-container>
 					</v-card-text>
@@ -77,6 +102,9 @@ var el = new Vue({
   delimiters: ['[[',']]'],
   data () {
       return {
+            language : {{language|safe}},
+            manufacture : {{manufacture|safe}},
+            category : {{category|safe}},
             headers: [
                 {
                   text: 'ID',
@@ -115,22 +143,41 @@ var el = new Vue({
 
            goods,
            editedIndex: -1,
+
            editedItem: {
-              category_id: 0,
-              name: '',
-              short_name: ''
+              _id           : 0,
+              _full_name    : '',
+              _short_name   : '',
+              _descr        : '',
+              _price        : 0.0,
+              _available    : 1,
+              _count        : 0,
+              _year         : '',
+              _language     : {'_id': 0, '_name': '', '_short_name': ''},
+              _manufacture  : {'_id': 0, '_name': '', '_short_name': ''},
+              _category     : {'_id': 0, '_name': '', '_short_name': ''},
+              _images       : []
             },
            defaultItem: {
-              category_id: 0,
-              name: '',
-              short_name: ''
+              _id           : 0,
+              _full_name    : '',
+              _short_name   : '',
+              _descr        : '',
+              _price        : 0.0,
+              _available    : 1,
+              _count        : 0,
+              _year         : '',
+              _language     : {'_id': 0, '_name': '', '_short_name': ''},
+              _manufacture  : {'_id': 0, '_name': '', '_short_name': ''},
+              _category     : {'_id': 0, '_name': '', '_short_name': ''},
+              _images       : []
             }
       }
   },
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'Новая категория' : 'Редактирование категории'
+      return this.editedIndex === -1 ? 'Новый товар' : 'Редактирование товара'
     }
   },
 
@@ -144,7 +191,7 @@ var el = new Vue({
   {
     editItem (item)
     {
-      this.editedIndex = this.categories.indexOf(item)
+      this.editedIndex = this.goods.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },

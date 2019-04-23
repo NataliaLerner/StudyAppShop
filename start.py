@@ -74,10 +74,14 @@ def category_management():
 def management_of_goods():
     global db
     g = db.get_goods()
-    print(g)
     js = Goods.ToMap(g)
-    print(js)
-    return render_template('management_of_goods.html', goods = json.dumps(js, indent=4))
+    l = db.get_map_language()
+    m = db.get_map_manufacture()
+    c = db.get_map_category()
+    print(l)
+    return render_template('management_of_goods.html', goods = json.dumps(js, indent=4), \
+        language = json.dumps(l, indent=4), manufacture = json.dumps(m, indent=4),
+        category = json.dumps(c, indent=4))
 
 @app.route('/admin/api/categories/create', methods=['POST'])
 def create_category():

@@ -260,6 +260,35 @@ class DbApi:
 		args = (id, name, short_name)
 		status = self._cur.callproc(pname,args)
 
+	@try_except
+	@valid_admin
+	def get_map_language(self):
+		query = """SELECT name FROM Languages"""
+		logger.info(query)
+		self._cur.execute(query)
+		res = []
+		for i in self._cur.fetchall():
+			res.append(i[0])
+		return res
 
+	@try_except
+	@valid_admin
+	def get_map_manufacture(self):
+		query = """SELECT name FROM Manufactures"""
+		logger.info(query)
+		self._cur.execute(query)
+		res = []
+		for i in self._cur.fetchall():
+			res.append(i[0])
+		return res
 
-
+	@try_except
+	@valid_admin
+	def get_map_category(self):
+		query = """SELECT name FROM Categories"""
+		logger.info(query)
+		self._cur.execute(query)
+		res = []
+		for i in self._cur.fetchall():
+			res.append(i[0])
+		return res
