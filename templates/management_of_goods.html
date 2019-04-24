@@ -49,6 +49,18 @@
 							</v-layout>
 						</v-container>
 					</v-card-text>
+          <v-container>
+              <v-data-table :headers="headers_image"
+      :items="editedItem._images"
+      class="elevation-1">
+
+                <template v-slot:items="img">
+                      <td>[[img.item._id]]</td>
+                      <td>[[img.item._name]]</td>
+                      <td>[[img.item._image_type._descr]]</td>
+                </template>
+              </v-data-table>
+          </v-container>
 
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -105,6 +117,24 @@ var el = new Vue({
             language : {{language|safe}},
             manufacture : {{manufacture|safe}},
             category : {{category|safe}},
+            headers_image: [
+                {
+                  text: 'ID',
+                  align: 'left',
+                  sortable: false,
+                  value: '_id'
+                },{
+                  text: 'Наименование',
+                  align: 'left',
+                  sortable: false,
+                  value: '_name'
+                },{
+                  text: 'Тип',
+                  align: 'left',
+                  sortable: false,
+                  value: '_descr'
+                }
+            ],
             headers: [
                 {
                   text: 'ID',
@@ -156,7 +186,8 @@ var el = new Vue({
               _language     : {'_id': 0, '_name': '', '_short_name': ''},
               _manufacture  : {'_id': 0, '_name': '', '_short_name': ''},
               _category     : {'_id': 0, '_name': '', '_short_name': ''},
-              _images       : []
+              _images       : [{'_id': 0, '_name': '', '_short_name': '', '_path': '',
+                                '_image_type': {'_id': 0, '_descr': ''}}]
             },
            defaultItem: {
               _id           : 0,
