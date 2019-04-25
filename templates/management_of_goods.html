@@ -50,6 +50,32 @@
 						</v-container>
 					</v-card-text>
           <v-container>
+              <v-dialog v-model="dialog_image" max-width="500px">
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="primary" dark class="mb-2" v-on="on">Добавить картинку</v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">[[ formTitleImage ]]</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container grid-list-md>
+                        <v-layout wrap>
+                          <v-img src="https://picsum.photos/510/300?random" aspect-ratio="1.4"></v-img>
+                          <v-flex xs12 sm12 md12>
+                            <v-text-field v-model="editedItem._full_name" label="Наименование товара"></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" flat @click="close_image">Отмена</v-btn>
+                      <v-btn color="blue darken-1" flat @click="save_image">Сохранить</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                  
+              </v-dialog>
               <v-data-table :headers="headers_image"
       :items="editedItem._images"
       class="elevation-1">
@@ -58,6 +84,18 @@
                       <td>[[img.item._id]]</td>
                       <td>[[img.item._name]]</td>
                       <td>[[img.item._image_type._descr]]</td>
+                      <td class="justify-center layout px-0">
+                          <v-icon
+                          small
+                          @click="editItemImage(props.item)">
+                          edit
+                        </v-icon>
+                          <v-icon
+                          small
+                          @click="deleteItemImage(props.item)">
+                          delete
+                        </v-icon>
+                      </td>
                 </template>
               </v-data-table>
           </v-container>
@@ -133,6 +171,9 @@ var el = new Vue({
                   align: 'left',
                   sortable: false,
                   value: '_descr'
+                },
+                {
+                     sortable: false
                 }
             ],
             headers: [
@@ -173,6 +214,7 @@ var el = new Vue({
 
            goods,
            editedIndex: -1,
+           editedIndexImage: -1,
 
            editedItem: {
               _id           : 0,
@@ -209,11 +251,17 @@ var el = new Vue({
   computed: {
     formTitle () {
       return this.editedIndex === -1 ? 'Новый товар' : 'Редактирование товара'
+    },
+    formTitleImage () {
+      return this.editedIndexImage === -1 ? 'Добавление изображения' : 'Редактирование изображения'
     }
   },
 
   watch: {
     dialog (val) {
+      val || this.close()
+    },
+    dialog_image (val) {
       val || this.close()
     }
   },
@@ -245,6 +293,13 @@ var el = new Vue({
         this.editedIndex = -1
       }, 300)
     },
+    close_image () {
+      this.dialog_image = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndexImage = -1
+      }, 300)
+    },
 
     save () {
       if (this.editedIndex > -1) {
@@ -268,6 +323,10 @@ var el = new Vue({
       }
 
       this.close()
+    },
+
+    save_image () {
+      this.close_image()
     }
   }
  })
