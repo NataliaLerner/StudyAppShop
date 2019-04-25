@@ -169,4 +169,4 @@ def pagenotfound(error):
 if __name__ == '__main__':
 
     db = DbApi()
-    app.run(debug=True, port = 3306)
+    app.run(host="0.0.0.0", debug=True, port = 8080)
