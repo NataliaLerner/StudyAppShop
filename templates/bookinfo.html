@@ -2,36 +2,52 @@
 {% block content %}
 <!-- Страница книги -->
 
-    <v-layout row wrap>
-	    <v-card class="mx-auto mt-3" width=800>
-	        <v-img
-	          class="black--text"
-	          height="200px"
-              src="{{ book.link_icon }}"
-	        >
-	          <v-container fill-height fluid>
-	            <v-layout fill-height>
-	              <v-flex xs12 align-center flexbox>
-	                <h1>{{ book.name }}</h1>
-                    <p>{{ book.author }}</p>
-	              </v-flex>
-	            </v-layout>
-	          </v-container>
-	        </v-img>
-	        <v-card-actions>
-                <p>
+    <v-container grid-list-md text-xs-center>
+        <v-card>
+            <div style="margin: 15px;">
+            <v-layout row wrap>
+                <v-flex :key="`6${2}`" xs6>
+
+                    <v-img
+                          style="width:200px;"
+                          src="{{ book.link_icon }}"
+                        ></v-img>
+
+              </v-flex>
+                <v-flex :key="`6${1}`" xs6>
+                    <div>
+                        <span class="headline">
+                            <h2 align="left">{{ book.name }}</h2>
+                        </span>
+                        <div class="d-flex">
+                            {{ book.author }}<br>
+                            Категория: {{ book.category  }}
+                        </div>
+
+                    </div>
+                    <v-card dark color="light-blue" width="200px">
+                        <v-flex xs12 align-content-left>
+                            <h1>Доступно: {{ book.quantity }}</h1>
+                        </v-flex>
+
+                        <v-flex xs6 align-content-center>
+                            <h1>{{ book.price }}₽</h1>
+                        </v-flex>
+                        <v-btn dark-color="primary">В корзину</v-btn>
+                    </v-card>
+              </v-flex>
+              <v-flex xs12>
+                    <p align="left">
                     lorem ipsum dolor sit amet..<br>
-                    i don't know it at all, so there will be some random symbols<br>
-                    djklzfhlkbfldknvkbndblkbnbdf
-                    bdfnkbnfdbkldbnfdklnbllsdbzlgndzlgnbrhgoizdhnglndlfngbdnfgbldfnhfdjdf
-                    jgfjxfjgjcfjfjkjddvhndghvksvdlghvlskghslrhgskhgbghkldfbghblfksghb f
-                    sdhbihdr hjolsdrhjosdfj;h oo;rih n oisr jshoijsbrioej;jaoroighnaihiughkfhdgo;afdh
-                    adabifnghbnioadgonbadogah
-                    gg {{ book.id }}
+                    {{ book.description }}<br>
+                        Год издания: {{ book.year }}
                 </p>
-	        </v-card-actions>
-	    </v-card>
-    </v-layout>
+              </v-flex>
+            </v-layout>
+            </div>
+        </v-card>
+    </v-container>
+
 
 {% endblock content %}
 

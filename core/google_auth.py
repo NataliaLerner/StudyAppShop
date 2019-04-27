@@ -64,5 +64,8 @@ class GoogleSignIn(OAuthSignIn):
         me = oauth_session.get('').json()
         print(me)
         print(me.keys())
-        return (me['name'],
+        if 'name' in me.keys():
+            return (me['name'],
                 me['email'])
+        else:
+            return (None, me['email'])

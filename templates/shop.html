@@ -4,7 +4,7 @@
     <v-layout row wrap>
     	{% for book in books %}
 		<v-hover>
-		    <v-card class="mx-auto mt-3" width=300 href="{{ url_for('bookinfo',bookid=book.id) }}">
+		    <v-card class="mx-auto mt-3" width=300 href="{{ url_for('bookinfo',bookid=book.id, bookname = book.name ) }}">
 		      <v-img
 		        :aspect-ratio="16/9"
 		        src={{ book.link_icon }}
@@ -21,7 +21,7 @@
 		        </div>
 		        <v-layout row wrap>
 		        	<v-flex xs6 align-content-center>
-		        		<h1>60₽</h1>
+		        		<h1>{{ book.price }}₽</h1>
 			    	</v-flex>
 			    	<v-flex xs6>
 			    		<v-btn icon class="mr-0">
