@@ -1,6 +1,8 @@
 from collections import namedtuple
 from enum import IntEnum
 
+DEFAULT_ADDRES = "http://127.0.0.1:3306"
+
 ListBooks = namedtuple('listBooks', 'id link_icon name author description price quantity year category')
 CategoryNT = namedtuple('categories', 'category_id name short_name')
 UserNT = namedtuple('users', 'user_id name e_mail number_phone access_level')
