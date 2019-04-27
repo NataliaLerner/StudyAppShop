@@ -1,17 +1,27 @@
 from flask import Flask, render_template, session, redirect, url_for, request
+from flask_uploads import UploadSet, configure_uploads, IMAGES
+from datetime import datetime
 
-from core import ListBooks, User
+from core import ListBooks, Category, User, Goods
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
+from core import DEFAULT_ADDRES
+import json
+import ast
 
 
 import os, ssl
+
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
         getattr(ssl, '_create_unverified_context', None)):
     ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
 app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
+photos = UploadSet('photos', IMAGES)
+
+app.config['UPLOADED_PHOTOS_DEST'] = 'static/img'
+configure_uploads(app, photos)
 
 @app.route('/')
 def index():
@@ -24,9 +34,22 @@ def contacts():
 
 @app.route('/basket')
 def basket():
-    return render_template('basket.html')
+    return render_template('basket.html', e1=0)
 
-books = [
+@app.route('/get_token')
+def test():
+    global db
+    if ('user' in session.keys()):
+        then = datetime.strptime(session['token_datatime'], "%d.%m.%y %H:%M:%S")
+        data = datetime.now() - then
+        if data.seconds > 900:
+            session['token_user'], session['token_datatime'] = db.get_token(session['user']['_id'])
+            print(session['token_user'], session['token_datatime'])
+    return ""
+
+@app.route('/shop')
+def shop():
+    books = [
     ListBooks(id=1,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети1", author="Таненбаум", description="blablabla", price="123", quantity="15", year="1812", category="Фантастика"),
     ListBooks(id=2,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети2", author="Таненбаум", description="фартук в масле оливье", price="262", quantity="88", year="1990", category="Поэзия"),
     ListBooks(id=3,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети3", author="Таненбаум", description="овадлдчижрии", price="3446", quantity="34754", year="2002", category="Детские"),
@@ -35,16 +58,92 @@ books = [
     ListBooks(id=6,link_icon="https://s4-goods.ozstatic.by/480/157/104/104157_0_Kompyuternie_seti_Endryu_Tanenbaum.jpg", name="Компьютерные сети6", author="Таненбаум", description="Самосвал песка", price="1488", quantity="15", year="2020", category="Хоррор"),
 
             ]
-
-@app.route('/shop')
-def shop():
-
     count_shop = len(session['shopping'])
     return render_template('shop.html', count_shop = count_shop, books=books)
 
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
+@app.route('/order_management')
+def order_management():
+    #global db
+    return render_template('order_management.html')
+
+@app.route('/category_management')
+def category_management():
+    global db
+    c = db.get_categories("")
+    return render_template('category_management.html', categories = json.dumps(Category.ToMap(c), indent=4))
+
+@app.route('/management_of_goods')
+def management_of_goods():
+    global db
+    g = db.get_goods()
+    js = Goods.ToMap(g)
+    l = db.get_map_language()
+    m = db.get_map_manufacture()
+    c = db.get_map_category()
+    i_t = db.get_map_image_types()
+    print(l)
+    return render_template('management_of_goods.html', goods = json.dumps(js, indent=4), \
+        language = json.dumps(l, indent=4), manufacture = json.dumps(m, indent=4),
+        category = json.dumps(c, indent=4), image_types = json.dumps(i_t, indent=4))
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    print(request.files)
+    if request.method == 'POST' and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        print(DEFAULT_ADDRES + "/static/img/" + filename)
+    return DEFAULT_ADDRES + "/static/img/"
+    
+@app.route('/admin/api/categories/create', methods=['POST'])
+def create_category():
+    global db
+    name = request.json[0]['name']
+    short_name = request.json[1]['short_name']
+    id = db.create_categories(name, short_name)
+    return json.dumps({'category_id': id}), 200
+
+@app.route('/admin/api/categories/update', methods=['POST'])
+def update_category():
+    global db
+    id = request.json[0]['category_id']
+    name = request.json[1]['name']
+    short_name = request.json[2]['short_name']
+    db.update_categories(id, name, short_name)
+    return json.dumps({'result': True})
+
+@app.route('/admin/api/categories/delete', methods=['POST'])
+def delete_category():
+    global db
+    category_id = request.json['category_id']
+    r = db.delete_categories(category_id)
+    return json.dumps({'result': True})
+
+@app.route('/users_management')
+def users_management():
+    global db
+    u = db.get_users()
+    return render_template('users_management.html', users = json.dumps(User.ToMap(u), indent=4))
+
+@app.route('/admin/api/users/update', methods=['POST'])
+def update_user():
+    global db
+    id = request.json[0]['user_id']
+    access = request.json[1]['access_level']
+    u = db.update_user(id, access)
+    return json.dumps({'result': True})
+
+
+@app.route('/admin/api/users/delete', methods=['POST'])
+def delete_user():
+    global db
+    user_id = request.json['user_id']
+    r = db.delete_user(user_id)
+    return json.dumps({'result': True})
+
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
@@ -58,6 +157,7 @@ def oauth_callback(provider):
     username, email = oauth.callback()
     user = db.get_user(username, email)
     session['user'] = user.__dict__
+    session['token_user'], session['token_datatime'] = db.get_token(session['user']['_id'])
     return redirect('/')
 
 @app.route('/logout')
@@ -80,7 +180,6 @@ def bookinfo(bookid, bookname):
 @app.errorhandler(404)
 def pagenotfound(error):
     return render_template('error404.html'), 404
-
 
 if __name__ == '__main__':
 

@@ -2,7 +2,66 @@
 {% block content %}
 <!-- Корзина -->
 
-<v-layout row wrap>
+<div id="app">
+  <v-app id="inspire">
+    <v-stepper v-model="e1">
+      <v-stepper-header>
+        <v-stepper-step :complete="e1 > 1" step="1">Корзина</v-stepper-step>  
+        <v-divider></v-divider>  
+        <v-stepper-step :complete="e1 > 2" step="2">Оформление заказа</v-stepper-step>  
+        <v-divider></v-divider>  
+        <v-stepper-step step="3">Завершение</v-stepper-step>
+      </v-stepper-header>
+  
+      <v-stepper-items>
+        <v-stepper-content step="1">
+          <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>  
+          <v-btn color="primary" @click="e1 = 2">Далее</v-btn>  
+          <v-btn flat href="/">Назад</v-btn>
+        </v-stepper-content>
+  
+        <v-stepper-content step="2">
+          <v-card class="mb-5" color="grey lighten-1" height="200px" >
+            <v-layout row wrap>
+              <v-flex xs12>
+                <div id="app"> 
+                  <v-app id="inspire"> 
+                    <v-form ref="form" v-model="valid" lazy-validation class="margin ma-4" class= "text-lxs-center"> 
+                      <v-text-field v-model="name" :rules="nameRules" placeholder="Имя" 
+                      required 
+                      ></v-text-field> 
+
+                      <v-text-field v-model="email" :rules="emailRules" placeholder="Эл. почта"
+                      required 
+                      ></v-text-field> 
+
+                      <v-text-field v-model="number_phone" :rules="numberPhoneRules" placeholder="Номер телефона"
+                      required 
+                      ></v-text-field> 
+
+                      <v-form>
+                      </v-app> 
+                    </div>
+                  </v-flex>
+                </v-layout>
+          </v-card>  
+          <v-btn color="primary" @click="e1 = 3">Купить</v-btn>  
+          <v-btn @click="e1 = 1" flat>Назад</v-btn>
+        </v-stepper-content>
+  
+        <v-stepper-content step="3">
+          <v-card class="mb-5" color="grey lighten-1" height="200px">
+            
+            
+          </v-card>  
+          <v-btn color="primary" flat href="/">На главную</v-btn>          
+        </v-stepper-content>
+      </v-stepper-items>
+    </v-stepper>
+  </v-app>
+</div>
+
+<!--<v-layout row wrap>
 	<v-flex xs12>
 	<div id="app"> 
 		<v-app id="inspire"> 
@@ -19,8 +78,6 @@
 				required 
 				></v-text-field> 
 
-
-
 				<div class="text-xs-center"> 
 					<v-btn round color="primary" dark>Отмена</v-btn> 
 					<v-btn round color="primary" dark>Купить</v-btn> 
@@ -30,5 +87,45 @@
 	</div>
 </v-flex>
 </v-layout>
+-->
+
+{% endblock %}
+
+{% block data %}
+,data:{ valid: true,
+      name: '',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+      ],
+      email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+/.test(v) || 'E-mail must be valid'
+      ],
+      
+      select: null,
+      items: [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4'
+      ],
+      checkbox: false,
+      e1:0 }
+    ,
+     methods: {
+      validate () {
+        if (this.$refs.form.validate()) {
+          this.snackbar = true
+        }
+      },
+      reset () {
+        this.$refs.form.reset()
+      },
+      resetValidation () {
+        this.$refs.form.resetValidation()
+      }
+    }
 
 {% endblock %}

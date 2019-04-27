@@ -1,0 +1,215 @@
+<div id="test">
+    <template>
+        <v-toolbar flat color="white">
+            <v-toolbar-title>Управление пользователями</v-toolbar-title>
+
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">[[ formTitle ]]</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-layout row wrap>
+
+                                <v-flex xs2>
+                                    <v-text-field v-model="editedItem.user_id" label="Id" readonly></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs10>
+                                    <v-text-field v-model="editedItem.name" label="Имя" readonly></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 d-flex>
+                                    <v-select
+                                            :items="access_levels"
+                                            label="Роль"
+                                            item-value="id"
+                                            item-text="text"
+                                            v-model="editedItem.access_level"
+
+                                    ></v-select>
+                                </v-flex>
+
+                                <v-flex xs9>
+                                    <v-text-field v-model="editedItem.e_mail" label="E-mail"></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs3>
+                                    <v-text-field v-model="editedItem.number_phone" label="Телефон" readonly></v-text-field>
+                                </v-flex>
+
+                            </v-layout>
+                        </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
+                        <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-toolbar>
+
+        <v-container>
+
+            <v-data-table :headers="headers"
+                          :items="users"
+                          class="elevation-1"
+                          :rows-per-page-items='[20, 20, {text: " ", value: -1}]'>
+
+                <template v-slot:items="props">
+                    <td>[[props.item.user_id]]</td>
+                    <td>[[props.item.name]]</td>
+                    <td>[[props.item.e_mail]]</td>
+
+                    <td>[[access(props.item.access_level)]]</td>
+
+                    <td class="justify-center layout px-0">
+                        <v-icon
+                                small
+                                @click="editItem(props.item)">
+                            edit
+                        </v-icon>
+                        <v-icon
+                                small
+                                @click="deleteItem(props.item)">
+                            delete
+                        </v-icon>
+                    </td>
+                </template>
+
+
+            </v-data-table>
+
+        </v-container>
+
+    </template>
+</div>
+
+<script>
+
+var users = {{users|safe}};
+var el = new Vue({
+  el: '#test',
+  delimiters: ['[[',']]'],
+  data () {
+      return {
+            headers: [
+                {
+                  text: 'ID',
+                  align: 'left',
+                  sortable: false,
+                  value: 'user_id'
+                },
+                {
+                  text: 'Имя',
+                  align: 'left',
+                  sortable: false,
+                  value: 'name'
+                },
+                {
+                  text: 'E-mail',
+                  align: 'left',
+                  sortable: false,
+                  value: 'e_mail'
+                },
+                {
+                  text: 'Роль',
+                  align: 'left',
+                  sortable: false,
+                  value: 'access_level'
+                },
+                {
+                  sortable: false
+                }
+            ],
+
+           access_levels: [
+                {
+                    id: 0,
+                    text: "Админ"
+                },
+                {
+                    id: 1,
+                    text: "Пользователь"
+                }
+           ],
+
+           users,
+           editedIndex: -1,
+           editedItem: {
+              user_id: 0,
+              name: '',
+              e_mail: '',
+              number_phone: '',
+              access_level: 0
+
+            },
+           defaultItem: {
+              user_id: 0,
+              name: '',
+              e_mail: '',
+              number_phone: '',
+              access_level: 0
+            }
+      }
+  },
+
+  computed: {
+    formTitle () {
+      'Редактирование'
+    }
+  },
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
+
+  methods:
+  {
+    editItem (item)
+    {
+      this.editedIndex = this.users.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+
+    deleteItem (item)
+    {
+      const index = this.users[this.users.indexOf(item)].user_id;
+      var url = '/admin/api/users/delete';
+
+      data = {'user_id': index};
+      confirm('Вы уверены что хотите удалить этот элемент?') && this.users.splice(this.users.indexOf(item), 1);
+
+      sendJsonAndGetTextFromService(url, data , 'POST');
+    },
+
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+
+    save () {
+        var url = '/admin/api/users/update';
+        data = [{'user_id': this.editedItem.user_id}, {'access_level': this.editedItem.access_level}];
+        var res = sendJsonAndGetTextFromService(url, data , 'POST');
+
+        Object.assign(this.users[this.editedIndex], this.editedItem)
+        this.close()
+    }
+   ,access(val){ return val === 0 ? 'Админ' : 'Пользователь'}
+  }
+ })
+
+</script>
+
+

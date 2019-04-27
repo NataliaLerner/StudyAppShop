@@ -7,18 +7,15 @@
   <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='ServiceHelper.js') }}"></script>
+
 </head>
 <body>
 	<div id="app">
 		<v-app>
-<!--
-            <v-overlay :value="overlay404">
-                <v-btn icon @click="overlay = false">
-                    <p>404</p>
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-            </v-overlay>
--->
 			{% block menu %}{% endblock %}
 			
 			<v-toolbar dark color="primary" app scroll-off-screen clipped-left>
@@ -46,7 +43,7 @@
 	          			</v-badge>
 	        		</v-btn>
 	        		{% if 'user' in session.keys() %}
-	        			{% if session['user']['_access_lavel'] == 0 %}
+	        			{% if session['user']['_access_level'] == 0 %}
 	        				<v-btn flat href="/admin">Администрирование</v-btn>
 	        			{% endif %}
 	        		{% endif %}
@@ -59,22 +56,22 @@
 	        			<v-icon>fab fa-google</v-icon>
 	        		</v-btn>
 	        		{% endif %}
-	        	</v-toolbar-items>
-				
+	        	</v-toolbar-items>				
 			</v-toolbar>
-
-
-
 			<v-content>
 				{% block content %}{% endblock %}
 			</v-content>
+			<div id="token"></div>
 		</v-app>
+
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+	
 	<script>
-		new Vue({ el: '#app' })
+		new Vue({ el: '#app' {% block data %}{% endblock %} 
+			  });
+
 	</script>
+
 </body>
 </html>
