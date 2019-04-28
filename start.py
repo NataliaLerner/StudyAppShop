@@ -1,9 +1,11 @@
 from flask import Flask, render_template, session, redirect, url_for, request
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 from datetime import datetime
 
 from core import ListBooks, Category, User, Goods
 from core import DbApi
 from core import OAuthSignIn, GoogleSignIn
+from core import DEFAULT_ADDRES
 import json
 import ast
 
@@ -16,6 +18,10 @@ if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
 
 app = Flask(__name__)
 app.secret_key = '5e8d527e-7dc4-4be5-8364-44ae3dcb43d0'
+photos = UploadSet('photos', IMAGES)
+
+app.config['UPLOADED_PHOTOS_DEST'] = 'static/img'
+configure_uploads(app, photos)
 
 @app.route('/')
 def index():
@@ -92,11 +98,20 @@ def management_of_goods():
     l = db.get_map_language()
     m = db.get_map_manufacture()
     c = db.get_map_category()
+    i_t = db.get_map_image_types()
     print(l)
     return render_template('management_of_goods.html', goods = json.dumps(js, indent=4), \
         language = json.dumps(l, indent=4), manufacture = json.dumps(m, indent=4),
-        category = json.dumps(c, indent=4))
+        category = json.dumps(c, indent=4), image_types = json.dumps(i_t, indent=4))
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    print(request.files)
+    if request.method == 'POST' and 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        print(DEFAULT_ADDRES + "/static/img/" + filename)
+    return DEFAULT_ADDRES + "/static/img/"
+    
 @app.route('/admin/api/categories/create', methods=['POST'])
 def create_category():
     global db

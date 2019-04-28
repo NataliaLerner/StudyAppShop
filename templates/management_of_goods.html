@@ -61,9 +61,30 @@
                     <v-card-text>
                       <v-container grid-list-md>
                         <v-layout wrap>
-                          <v-img src="https://picsum.photos/510/300?random" aspect-ratio="1.4"></v-img>
                           <v-flex xs12 sm12 md12>
-                            <v-text-field v-model="editedItem._full_name" label="Наименование товара"></v-text-field>
+                            <v-img :src="editedItemImage._path"></v-img>
+                          </v-flex>
+                          <v-flex xs12 sm12 md12>
+                            <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}" id="forms_img">
+                                <v-text-field v-if="!editedItemImage._path" label="Загрузить изображение" @click='pickFile' v-model="editedItemImage._path" prepend-icon='attach_file'></v-text-field>
+                                  <input
+                                    type=file
+                                    name=photo
+                                    style="display: none"
+                                    ref="image"
+                                    accept="image/*"
+                                    @change="onFilePicked"
+                                  >
+                            </form>
+                          </v-flex>
+                          <v-flex xs12 sm12 md12>
+                            <v-text-field v-model="editedItemImage._name" label="Наименование изображения"></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm12 md12>
+                            <v-text-field v-model="editedItemImage._short_name" label="Сокращенное наименование"></v-text-field>
+                          </v-flex>
+                          <v-flex xs12 sm12 md12>
+                            <v-select v-model="editedItemImage._image_type._descr" :items="image_types" label="Тип картинки"></v-select>
                           </v-flex>
                         </v-layout>
                       </v-container>
@@ -77,8 +98,8 @@
                   
               </v-dialog>
               <v-data-table :headers="headers_image"
-      :items="editedItem._images"
-      class="elevation-1">
+                            :items="editedItem._images"
+                            class="elevation-1">
 
                 <template v-slot:items="img">
                       <td>[[img.item._id]]</td>
@@ -87,7 +108,7 @@
                       <td class="justify-center layout px-0">
                           <v-icon
                           small
-                          @click="editItemImage(props.item)">
+                          @click="editItemImage(editedItem, img.item)">
                           edit
                         </v-icon>
                           <v-icon
@@ -155,6 +176,8 @@ var el = new Vue({
             language : {{language|safe}},
             manufacture : {{manufacture|safe}},
             category : {{category|safe}},
+            image_types : {{image_types|safe}},
+            image_sourse : '',
             headers_image: [
                 {
                   text: 'ID',
@@ -215,6 +238,20 @@ var el = new Vue({
            goods,
            editedIndex: -1,
            editedIndexImage: -1,
+           defaultItemImage: {
+            _id: 0, 
+            _name: '', 
+            _short_name: '', 
+            _path: '',
+            _image_type: {_id: 0, _descr: ''}
+            },
+           editedItemImage: {
+            _id: 0, 
+            _name: '', 
+            _short_name: '', 
+            _path: '',
+            _image_type: {_id: 0, _descr: ''}
+            },
 
            editedItem: {
               _id           : 0,
@@ -225,11 +262,10 @@ var el = new Vue({
               _available    : 1,
               _count        : 0,
               _year         : '',
-              _language     : {'_id': 0, '_name': '', '_short_name': ''},
-              _manufacture  : {'_id': 0, '_name': '', '_short_name': ''},
-              _category     : {'_id': 0, '_name': '', '_short_name': ''},
-              _images       : [{'_id': 0, '_name': '', '_short_name': '', '_path': '',
-                                '_image_type': {'_id': 0, '_descr': ''}}]
+              _language     : {_id: 0, _name: '', _short_name: ''},
+              _manufacture  : {_id: 0, _name: '', _short_name: ''},
+              _category     : {_id: 0, _name: '', _short_name: ''},
+              _images       : []
             },
            defaultItem: {
               _id           : 0,
@@ -240,9 +276,9 @@ var el = new Vue({
               _available    : 1,
               _count        : 0,
               _year         : '',
-              _language     : {'_id': 0, '_name': '', '_short_name': ''},
-              _manufacture  : {'_id': 0, '_name': '', '_short_name': ''},
-              _category     : {'_id': 0, '_name': '', '_short_name': ''},
+              _language     : {_id: 0, _name: '', _short_name: ''},
+              _manufacture  : {_id: 0, _name: '', _short_name: ''},
+              _category     : {_id: 0, _name: '', _short_name: ''},
               _images       : []
             }
       }
@@ -274,6 +310,50 @@ var el = new Vue({
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
+    editItemImage (props, item)
+    {
+      alert(item._path)
+      this.editedIndexImage = props._images.indexOf(item)
+      this.editedItemImage = Object.assign({}, item)
+      this.dialog_image = true
+    },
+    pickFile () {
+            this.$refs.image.click ()
+        },
+    onFilePicked (e) {
+      const files = e.target.files
+      if(files[0] !== undefined) {
+        if(files[0].name.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader ()
+        fr.readAsDataURL(files[0])
+        fr.addEventListener('load', () => {
+
+          
+          //$('#forms_img').ajaxSubmit({url: 'upload', type: 'post',async: false,
+        //success:function (data) {
+        //    return data;
+        //}})
+        })
+        var formData = new FormData($("#forms_img"));
+        var fd = new FormData;
+        fd.append('photo', $("#forms_img").prop('photo')[0]);
+        $.ajax({
+        url: 'upload',
+        type: 'POST',
+        data: formData,
+
+        contentType: 'multipart/form-data',
+        success: function (data) {
+            alert(data)
+        }
+    });
+        
+      } else {
+        
+      }
+    },
 
     deleteItem (item)
     {
@@ -294,9 +374,10 @@ var el = new Vue({
       }, 300)
     },
     close_image () {
+      alert(this.editedItemImage._path)
       this.dialog_image = false
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedItemImage = Object.assign({}, this.defaultItemImage)
         this.editedIndexImage = -1
       }, 300)
     },

@@ -45,6 +45,7 @@ class DbApi:
 		def wrapper(*args, **kwargs):
 			res = None
 			try:
+				args[0]._cur = args[0]._conn.cursor()
 				res = function(*args, **kwargs)
 			except pymysql.Error as err:
 				logger.error(err)
@@ -275,6 +276,17 @@ class DbApi:
 	@valid_admin
 	def get_map_manufacture(self):
 		query = """SELECT name FROM Manufactures"""
+		logger.info(query)
+		self._cur.execute(query)
+		res = []
+		for i in self._cur.fetchall():
+			res.append(i[0])
+		return res
+
+	@try_except
+	@valid_admin
+	def get_map_image_types(self):
+		query = """SELECT desciption FROM ImageTypes"""
 		logger.info(query)
 		self._cur.execute(query)
 		res = []
