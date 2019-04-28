@@ -2,8 +2,8 @@
 {% block content %}
 <!-- Корзина -->
 
-<div id="app">
-  <v-app id="inspire">
+<div id="basket">
+  <template>
     <v-stepper v-model="e1">
       <v-stepper-header>
         <v-stepper-step :complete="e1 > 1" step="1">Корзина</v-stepper-step>  
@@ -15,7 +15,10 @@
   
       <v-stepper-items>
         <v-stepper-content step="1">
-          <v-card class="mb-5" color="grey lighten-1" height="200px"></v-card>  
+          <v-card class="mb-5" color="grey lighten-1" height="200px">
+            {% include "basket_goods.html" %}
+
+          </v-card>  
           <v-btn color="primary" @click="e1 = 2">Далее</v-btn>  
           <v-btn flat href="/">Назад</v-btn>
         </v-stepper-content>
@@ -38,7 +41,6 @@
                       <v-text-field v-model="number_phone" :rules="numberPhoneRules" placeholder="Номер телефона"
                       required 
                       ></v-text-field> 
-
                       <v-form>
                       </v-app> 
                     </div>
@@ -58,41 +60,18 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-  </v-app>
+  </template>
 </div>
 
-<!--<v-layout row wrap>
-	<v-flex xs12>
-	<div id="app"> 
-		<v-app id="inspire"> 
-			<v-form ref="form" v-model="valid" lazy-validation class="margin ma-5" class= "text-lxs-center"> 
-				<v-text-field v-model="name" :rules="nameRules" placeholder="Имя" 
-				required 
-				></v-text-field> 
 
-				<v-text-field v-model="email" :rules="emailRules" placeholder="Эл. почта"
-				required 
-				></v-text-field> 
 
-				<v-text-field v-model="email" :rules="Rules" placeholder="Номер телефона"
-				required 
-				></v-text-field> 
-
-				<div class="text-xs-center"> 
-					<v-btn round color="primary" dark>Отмена</v-btn> 
-					<v-btn round color="primary" dark>Купить</v-btn> 
-				</div> 
-			<v-form>
-		</v-app> 
-	</div>
-</v-flex>
-</v-layout>
--->
-
-{% endblock %}
-
-{% block data %}
-,data:{ valid: true,
+<script>
+  var el1 = new Vue({
+    el: '#basket',
+    delimiters: ['[[',']]'],
+    data () {
+      return {
+      valid: true,
       name: '',
       nameRules: [
         v => !!v || 'Name is required',
@@ -112,8 +91,9 @@
         'Item 4'
       ],
       checkbox: false,
-      e1:0 }
+      el:0} }
     ,
+  
      methods: {
       validate () {
         if (this.$refs.form.validate()) {
@@ -126,6 +106,10 @@
       resetValidation () {
         this.$refs.form.resetValidation()
       }
-    }
+    }})
+
+  
+</script>
+
 
 {% endblock %}

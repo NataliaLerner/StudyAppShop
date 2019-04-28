@@ -1,0 +1,69 @@
+<div id="basket_goods">
+	<template>	
+
+		<v-container>
+			<v-data-table :headers="headers"
+			:items="basket_"
+			class="elevation-1"
+			:rows-per-page-items='[20, 20, {text: " ", value: -1}]'>
+
+			<template v-slot:items="props">
+				<td>[[]]</td>
+				<td>[[props.item.name]]</td>
+				<td>[[props.item.price]]</td>
+				<td>[[props.item.count]]</td>
+				<td>[[]]</td>
+			</template>
+		</v-data-table>
+	</v-container>
+</template>
+</div>
+
+
+<script>
+
+	var basket_ = {{basket_|safe}}
+  var el2 = new Vue({
+    el: '#basket_goods',
+    delimiters: ['[[',']]'],
+    data () {
+      return {
+        headers: [
+        {
+          text: '№',
+          align: 'left',
+          sortable: false,
+          value: 'number'
+        },
+        {
+          text: 'Наименование товара',
+          align: 'left',
+          sortable: false,
+          value: 'name'
+        },
+        {
+          text: 'Цена(Шт)',
+          align: 'left',
+          sortable: false,
+          value: 'price'
+        },
+        {
+          text: 'Количество',
+          align: 'left',
+          sortable: false,
+          value: 'count'
+        },
+        {
+          text: 'Итого',
+          align: 'left',
+          sortable: false,
+          value: 'all_price'
+        }        
+        ]       
+
+      }
+    } 
+
+        
+  })
+</script>

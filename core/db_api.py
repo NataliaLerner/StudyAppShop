@@ -292,3 +292,17 @@ class DbApi:
 		for i in self._cur.fetchall():
 			res.append(i[0])
 		return res
+
+	@try_except
+	def get_product_name_and_price(self, id_):
+		query = """SELECT name, price FROM Products WHERE product_id = {0}""".format(id_)
+		logger.info(query)
+		self._cur.execute(query)
+		res = {"name": None, "price": None, "id_": id_ }
+		temp = self._cur.fetchall()[0]
+		res["name"] = temp[0]
+		res["price"] = temp[1]
+		return res
+
+
+
