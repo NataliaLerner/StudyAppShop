@@ -48,7 +48,11 @@ class DbApi:
 				args[0]._cur = args[0]._conn.cursor()
 				res = function(*args, **kwargs)
 			except pymysql.Error as err:
-				logger.error(err)
+				args[0].connection()
+				try:
+					res = function(*args, **kwargs)
+				except pymysql.Error as err:
+					logger.error(err)
 			except Exception as e:
 				logger.error(traceback.format_exc())
 			return res

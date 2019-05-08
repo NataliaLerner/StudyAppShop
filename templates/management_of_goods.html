@@ -62,11 +62,11 @@
                       <v-container grid-list-md>
                         <v-layout wrap>
                           <v-flex xs12 sm12 md12>
-                            <v-img :src="editedItemImage._path"></v-img>
+                            <img :src="editedItemImage._path" v-if="imageUrl" width="150" />
                           </v-flex>
                           <v-flex xs12 sm12 md12>
-                            <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}" id="forms_img">
-                                <v-text-field v-if="!editedItemImage._path" label="Загрузить изображение" @click='pickFile' v-model="editedItemImage._path" prepend-icon='attach_file'></v-text-field>
+                                <v-text-field id="change_url" v-modal="editedItemImage._path"></v-text-field>
+                                <v-text-field v-if="!editedItemImage._path" label="Загрузить изображение" @click='pickFile' prepend-icon='attach_file' ></v-text-field>
                                   <input
                                     type=file
                                     name=photo
@@ -75,7 +75,6 @@
                                     accept="image/*"
                                     @change="onFilePicked"
                                   >
-                            </form>
                           </v-flex>
                           <v-flex xs12 sm12 md12>
                             <v-text-field v-model="editedItemImage._name" label="Наименование изображения"></v-text-field>
@@ -173,6 +172,7 @@ var el = new Vue({
   delimiters: ['[[',']]'],
   data () {
       return {
+            imageUrl : "",
             language : {{language|safe}},
             manufacture : {{manufacture|safe}},
             category : {{category|safe}},
@@ -312,7 +312,6 @@ var el = new Vue({
     },
     editItemImage (props, item)
     {
-      alert(item._path)
       this.editedIndexImage = props._images.indexOf(item)
       this.editedItemImage = Object.assign({}, item)
       this.dialog_image = true
@@ -330,25 +329,24 @@ var el = new Vue({
         fr.readAsDataURL(files[0])
         fr.addEventListener('load', () => {
 
-          
-          //$('#forms_img').ajaxSubmit({url: 'upload', type: 'post',async: false,
-        //success:function (data) {
-        //    return data;
-        //}})
-        })
-        var formData = new FormData($("#forms_img"));
-        var fd = new FormData;
-        fd.append('photo', $("#forms_img").prop('photo')[0]);
-        $.ajax({
-        url: 'upload',
-        type: 'POST',
-        data: formData,
+              this.imageUrl = fr.result
+              this.imageFile = files[0]
+              var fd = new FormData;
+              fd.append('img', this.imageFile);
+              $.ajax({
+                  url: 'upload',
+                  data: fd,
+                  processData: false,
+                  contentType: false,
+                  type: 'POST',
+                  success: function (data) {
+                      alert('Изображение успешно загружено!');
+                      document.getElementById('change_url').value = data;
 
-        contentType: 'multipart/form-data',
-        success: function (data) {
-            alert(data)
-        }
-    });
+                  }
+              });
+              
+        })
         
       } else {
         
@@ -374,7 +372,6 @@ var el = new Vue({
       }, 300)
     },
     close_image () {
-      alert(this.editedItemImage._path)
       this.dialog_image = false
       setTimeout(() => {
         this.editedItemImage = Object.assign({}, this.defaultItemImage)
@@ -407,6 +404,36 @@ var el = new Vue({
     },
 
     save_image () {
+      alert(this.editedItemImage._path)
+      if (this.editedIndexImage > -1) {
+        var url = '/admin/api/image_goods/update';
+        data = [
+          {'_id' : this.editedItemImage._id},
+          {'_name' : this.editedItemImage._name},
+          {'_short_name' : this.editedItemImage._short_name},
+          {'_path' : this.editedItemImage._path},
+          {'_image_type_descr' : this.editedItemImage._image_type._descr}
+        ];
+
+        var res = sendJsonAndGetTextFromService(url, data , 'POST');
+
+        //Object.assign(this.categories[this.editedIndex], this.editedItem)
+      }
+      else {
+        var url = '/admin/api/image_goods/create';
+        data = [
+          {'_name' : this.editedItemImage._name},
+          {'_short_name' : this.editedItemImage._short_name},
+          {'_path' : this.editedItemImage._path},
+          {'_image_type_descr' : this.editedItemImage._image_type._descr}
+        ];
+
+        var res = sendJsonAndGetTextFromService(url, data , 'POST');
+        //var category_id = JSON.parse(res);
+
+        //this.editedItem.category_id = category_id['category_id'];
+        //this.categories.push(this.editedItem);
+      }
       this.close_image()
     }
   }

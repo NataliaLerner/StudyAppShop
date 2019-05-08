@@ -93,10 +93,10 @@ def management_of_goods():
 @app.route('/upload', methods=['POST'])
 def upload():
     print(request.files)
-    if request.method == 'POST' and 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
+    if request.method == 'POST' and 'img' in request.files:
+        filename = photos.save(request.files['img'])
         print(DEFAULT_ADDRES + "/static/img/" + filename)
-    return DEFAULT_ADDRES + "/static/img/"
+    return DEFAULT_ADDRES + "/static/img/" + filename
     
 @app.route('/admin/api/categories/create', methods=['POST'])
 def create_category():
@@ -105,6 +105,20 @@ def create_category():
     short_name = request.json[1]['short_name']
     id = db.create_categories(name, short_name)
     return json.dumps({'category_id': id}), 200
+
+@app.route('/admin/api/image_goods/create', methods=['POST'])
+def create_image():
+    global db
+    print(request.json)
+    id2 = request.json[0]['_name']
+    id3 = request.json[1]['_short_name']
+    id4 = request.json[2]['_path']
+    id5 = request.json[3]['_image_type_descr']
+    print(id2)
+    print(id3)
+    print(id4)
+    print(id5)
+    return json.dumps({'result': True})
 
 @app.route('/admin/api/categories/update', methods=['POST'])
 def update_category():
@@ -136,6 +150,22 @@ def update_user():
     u = db.update_user(id, access)
     return json.dumps({'result': True})
 
+@app.route('/admin/api/image_goods/update', methods=['POST'])
+def update_image():
+    global db
+    id1 = request.json[0]['_id']
+    id2 = request.json[1]['_name']
+    id3 = request.json[2]['_short_name']
+    id4 = request.json[3]['_path']
+    id5 = request.json[4]['_image_type_descr']
+    print(request.json)
+    print(id1)
+    print(id2)
+    print(id3)
+    print(id4)
+    print(id5)
+    return json.dumps({'result': True})
+
 
 @app.route('/admin/api/users/delete', methods=['POST'])
 def delete_user():
@@ -156,8 +186,12 @@ def oauth_callback(provider):
     oauth = OAuthSignIn.get_provider(provider)
     username, email = oauth.callback()
     user = db.get_user(username, email)
-    session['user'] = user.__dict__
-    session['token_user'], session['token_datatime'] = db.get_token(session['user']['_id'])
+    try:
+        session['user'] = user.__dict__
+        session['token_user'], session['token_datatime'] = db.get_token(session['user']['_id'])
+    except:
+        print('Ошибка подключения к ББ!')
+        return "DB ERROR"
     return redirect('/')
 
 @app.route('/logout')
