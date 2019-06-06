@@ -268,6 +268,37 @@ class DbApi:
 	@try_except
 	@valid_admin
 	@commit
+	def create_images(self, name, short_name, path, image_type_descr):
+		image_type_id = self.get_image_type_id_for_descr(image_type_descr)
+		query = """INSERT INTO Images (name, short_name, path, image_type_id) VALUES ('{0}','{1}','{2}','{3}')""".format(
+			name, short_name, path, image_type_id)
+		logger.info(query)
+		self._cur.execute(query)
+		return self._cur.lastrowid
+
+	@try_except
+	@valid_admin
+	@commit
+	def update_images(self, id_, name, short_name, path, image_type_descr):
+		image_type_id = self.get_image_type_id_for_descr(image_type_descr)
+		query = """UPDATE Images SET name='{0}', short_name='{1}', path='{2}', image_type_id='{3}' WHERE image_id='{4}'""".format(
+			name, short_name, path, image_type_id, id_)
+		logger.info(query)
+		self._cur.execute(query)
+		return self._cur.lastrowid
+
+
+	@try_except
+	@commit
+	def get_image_type_id_for_descr(self, descr):
+		query = """SELECT image_type_id FROM ImageTypes WHERE desciption='{0}'""".format(descr)
+		logger.info(query)
+		self._cur.execute(query)
+		return self._cur.fetchall()[0][0]
+
+	@try_except
+	@valid_admin
+	@commit
 	def update_categories(self, id, name, short_name):
 		pname = 'sp_categories_03'
 		args = (id, name, short_name)

@@ -121,16 +121,9 @@ def create_category():
 @app.route('/admin/api/image_goods/create', methods=['POST'])
 def create_image():
     global db
-    print(request.json)
-    id2 = request.json[0]['_name']
-    id3 = request.json[1]['_short_name']
-    id4 = request.json[2]['_path']
-    id5 = request.json[3]['_image_type_descr']
-    print(id2)
-    print(id3)
-    print(id4)
-    print(id5)
-    return json.dumps({'result': True})
+    id_ = db.create_images(request.json[0]['_name'], request.json[1]['_short_name'], request.json[2]['_path'], request.json[3]['_image_type_descr'])
+    
+    return json.dumps({'id_image': id_})
 
 @app.route('/admin/api/categories/update', methods=['POST'])
 def update_category():
@@ -165,17 +158,8 @@ def update_user():
 @app.route('/admin/api/image_goods/update', methods=['POST'])
 def update_image():
     global db
-    id1 = request.json[0]['_id']
-    id2 = request.json[1]['_name']
-    id3 = request.json[2]['_short_name']
-    id4 = request.json[3]['_path']
-    id5 = request.json[4]['_image_type_descr']
-    print(request.json)
-    print(id1)
-    print(id2)
-    print(id3)
-    print(id4)
-    print(id5)
+    db.update_images(request.json[0]['_id'], request.json[1]['_name'], request.json[2]['_short_name'], 
+        request.json[3]['_path'], request.json[4]['_image_type_descr'])
     return json.dumps({'result': True})
 
 

@@ -62,10 +62,9 @@
                       <v-container grid-list-md>
                         <v-layout wrap>
                           <v-flex xs12 sm12 md12>
-                            <img :src="editedItemImage._path" v-if="imageUrl" width="150" />
+                            <img :src="editedItemImage._path" v-if="imageUrl" width="200" />
                           </v-flex>
                           <v-flex xs12 sm12 md12>
-                                <v-text-field id="change_url" v-modal="editedItemImage._path"></v-text-field>
                                 <v-text-field v-if="!editedItemImage._path" label="Загрузить изображение" @click='pickFile' prepend-icon='attach_file' ></v-text-field>
                                   <input
                                     type=file
@@ -333,18 +332,17 @@ var el = new Vue({
               this.imageFile = files[0]
               var fd = new FormData;
               fd.append('img', this.imageFile);
-              $.ajax({
+              this.editedItemImage._path = ($.ajax({
                   url: 'upload',
                   data: fd,
                   processData: false,
                   contentType: false,
                   type: 'POST',
+                  async: false,
                   success: function (data) {
-                      alert('Изображение успешно загружено!');
-                      document.getElementById('change_url').value = data;
-
+                    return data;
                   }
-              });
+              }).responseText);
               
         })
         
@@ -352,7 +350,9 @@ var el = new Vue({
         
       }
     },
-
+    onChangeImageUrl() {
+      this.editedItemImage._path = document.getElementById('change_url').value;
+    },
     deleteItem (item)
     {
       const index = this.categories[this.categories.indexOf(item)].category_id;
@@ -390,7 +390,7 @@ var el = new Vue({
       }
 
       else {
-        var url = '/admin/api/categories/create';
+        var url = '/admin/api/book/create';
         data = [{'name': this.editedItem.name}, {'short_name': this.editedItem.short_name}];
 
         var res = sendJsonAndGetTextFromService(url, data , 'POST');
@@ -404,9 +404,9 @@ var el = new Vue({
     },
 
     save_image () {
-      alert(this.editedItemImage._path)
       if (this.editedIndexImage > -1) {
         var url = '/admin/api/image_goods/update';
+
         data = [
           {'_id' : this.editedItemImage._id},
           {'_name' : this.editedItemImage._name},
@@ -416,8 +416,7 @@ var el = new Vue({
         ];
 
         var res = sendJsonAndGetTextFromService(url, data , 'POST');
-
-        //Object.assign(this.categories[this.editedIndex], this.editedItem)
+        Object.assign(this.editedItem._images[this.editedIndexImage], this.editedItemImage)
       }
       else {
         var url = '/admin/api/image_goods/create';
@@ -427,12 +426,11 @@ var el = new Vue({
           {'_path' : this.editedItemImage._path},
           {'_image_type_descr' : this.editedItemImage._image_type._descr}
         ];
-
         var res = sendJsonAndGetTextFromService(url, data , 'POST');
-        //var category_id = JSON.parse(res);
-
-        //this.editedItem.category_id = category_id['category_id'];
-        //this.categories.push(this.editedItem);
+        var id_ = JSON.parse(res)
+        alert(id_["id_image"])
+        this.editedItemImage._id = id_["id_image"]
+        this.editedItem._images.push(this.editedItemImage)
       }
       this.close_image()
     }
