@@ -242,12 +242,6 @@ def show_info_card():
     print(request.args.get('show'))
     return redirect('/')#render_template('index.html', show = True if request.args.get('show') == 'False' else False)
 
-@app.route('/book/<int:bookid>/<string:bookname>')
-def bookinfo(bookid, bookname):
-    #select from db where id=bookid
-    bbb = books[bookid-1]
-    return render_template('bookinfo.html', book = bbb)
-
 @app.errorhandler(404)
 def pagenotfound(error):
     return render_template('error404.html'), 404
