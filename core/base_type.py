@@ -63,7 +63,7 @@ class Goods:
 	_category 		= None
 	_images 		= []
 
-	def __init__(self, _id, full_name, short_name, descr, price, available, count, year, 
+	def __init__(self, _id, full_name, short_name, descr, price, available, count, year,
 		language, manufacture, category, images = []):
 		self._id 			=  _id
 		self._full_name 	= full_name
@@ -110,7 +110,7 @@ class Goods:
 		return [ a.to_dict() for a in goods]
 
 class Language:
-	_id = None 
+	_id = None
 	_name = None
 	_short_name = None
 
@@ -127,7 +127,7 @@ class Language:
 		return res
 
 class Manufacture:
-	_id = None 
+	_id = None
 	_name = None
 	_short_name = None
 
@@ -211,3 +211,91 @@ class Category:
 	def __str__(self):
 		return "id={0} , name={1} , short_name={2}".format(
 			self.__category_id, self.__name, self.__short_name)
+
+
+class Statuses:
+	_status_id = None
+	_descr = None
+	_short_descr = None
+
+	def __init__(self, status_id, descr, short_descr):
+		self._status_id = status_id
+		self._descr = descr
+		self._short_descr = short_descr
+
+	def ToList(statuses):
+		res = []
+		for status in statuses:
+			res.append(Statuses(status[0],status[1],status[2]))
+		return res
+
+	def ToMap(statuses):
+		return [{'status_id': k, 'descr': v, 'short_name': e} for k,v,e in statuses]
+
+
+class Requests:
+	_request_id 		= None
+	_status_id 			= None
+	_status_descr 		= None
+	_customer_name 		= None
+	_customer_email 	= None
+	_customer_phone 	= None
+
+	def __init__(self,request_id,status_id,status_descr,customer_name,customer_email,customer_phone):
+		self._request_id				= request_id
+		self._status_id					= status_id
+		self._status_descr				= status_descr
+		self._customer_name				= customer_name
+		self._customer_email			= customer_email
+		self._customer_phone 			= customer_phone
+
+	def ToMap(self):
+		res = {}
+		res['request_id'] 		= self._request_id
+		res['status_id'] 		= self._status_id
+		res['status_descr'] 	= self._status_descr
+		res['customer_name'] 	= self._customer_name
+		res['customer_email'] 	= self._customer_email
+		res['customer_phone'] 	= self._customer_phone
+		return res
+
+	def ToArrOfMap(arr):
+		res = []
+		for item in arr:
+			res.append((Requests(item[0],item[1],item[2], item[3], item[4], item[5])).ToMap())
+		return res
+
+
+class RequestProducts:
+	_request_id		= None
+	_product_id		= None
+	_quantity		= None
+	_prod_descr		= None
+	_man_descr		= None
+	_price			= None
+
+	def __init__(self,_request_id,_product_id,_quantity,_prod_descr,_man_descr,_price):
+		self._request_id		= _request_id
+		self._product_id		= _product_id
+		self._quantity			= _quantity
+		self._prod_descr		= _prod_descr
+		self._man_descr			= _man_descr
+		self._price				= _price
+
+
+	def ToMap(self):
+		res = {}
+		res['request_id']	= self._request_id
+		res['product_id']	= self._product_id
+		res['quantity']		= self._quantity
+		res['prod_descr']	= self._prod_descr
+		res['man_descr']	= self._man_descr
+		res['price']		= self._price
+		return res
+
+	def ToArrOfMap(arr):
+		res = []
+		for item in arr:
+			res.append((RequestProducts(item[0],item[1],item[2], item[3], item[4], item[5])).ToMap())
+		return res
+

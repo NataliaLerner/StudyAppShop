@@ -1,1 +1,264 @@
+<div id="test">
+    <template>
+        <v-toolbar flat color="white">
+            <v-toolbar-title>Заказы</v-toolbar-title>
+
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="600px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">[[ formTitle ]]</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-layout wrap>
+
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field v-model="editedItem.request_id" label="Id" readonly></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 d-flex>
+                                    <v-select
+                                            :items="statuses"
+                                            label="Статус заказа"
+                                            item-value="status_id"
+                                            item-text="descr"
+                                            v-model="editedItem.status_id"
+                                    ></v-select>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field v-model="editedItem.customer_name" label="Заказчик" readonly></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field v-model="editedItem.customer_email" label="E-mail" readonly></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs12 sm6 md4>
+                                    <v-text-field v-model="editedItem.customer_phone" label="Телефон" readonly></v-text-field>
+                                </v-flex>
+
+                                <v-data-table :headers="product_headers"
+                                              :items="editedItem.products"
+                                              class="elevation-1">
+
+                                    <template v-slot:items="props">
+                                        <td>[[props.item.product_id]]</td>
+                                        <td>[[props.item.prod_descr]]</td>
+                                        <td>[[props.item.man_descr]]</td>
+                                        <td>[[props.item.quantity]]</td>
+                                        <td>[[props.item.price]]</td>
+                                        <td class="justify-center layout px-0">
+                                            <!--v-icon
+                                                    small
+                                                    @click="editItem(props.item)">
+                                                edit
+                                            </v-icon-->
+                                        </td>
+                                    </template>
+
+
+                                </v-data-table>
+
+
+                            </v-layout>
+                        </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
+                        <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-toolbar>
+
+        <v-container>
+
+            <v-data-table :headers="headers"
+                          :items="requests"
+                          class="elevation-1"
+                          :rows-per-page-items='[20, 20, {text: " ", value: -1}]'>
+
+                <template v-slot:items="props">
+                    <td>[[props.item.request_id]]</td>
+                    <td>[[props.item.status_descr]]</td>
+                    <td>[[props.item.customer_name]]</td>
+                    <td>[[props.item.customer_email]]</td>
+                    <td>[[props.item.customer_phone]]</td>
+                    <td class="justify-center layout px-0">
+                        <v-icon
+                                small
+                                @click="editItem(props.item)">
+                            edit
+                        </v-icon>
+                    </td>
+                </template>
+
+
+            </v-data-table>
+
+        </v-container>
+
+    </template>
+</div>
+
+<script>
+
+var requests = {{requests|safe}};
+var statuses = {{statuses|safe}};
+var el = new Vue({
+  el: '#test',
+  delimiters: ['[[',']]'],
+  data () {
+      return {
+            headers: [
+                {
+                  text: 'ID',
+                  align: 'left',
+                  sortable: false,
+                  value: 'request_id'
+                },
+                {
+                  text: 'Статус',
+                  align: 'left',
+                  sortable: false,
+                  value: 'status_descr'
+                },
+                {
+                  text: 'Заказчик',
+                  align: 'left',
+                  sortable: false,
+                  value: 'customer_name'
+                },
+                {
+                  text: 'E-mail',
+                  align: 'left',
+                  sortable: false,
+                  value: 'customer_email'
+                },
+                {
+                  text: 'Телефон',
+                  align: 'left',
+                  sortable: false,
+                  value: 'customer_phone'
+                },
+                {
+                  sortable: false
+                }
+            ],
+                product_headers: [
+                {
+                    text: 'ID',
+                    align: 'left',
+                    sortable: false,
+                    value: 'product_id'
+                },
+                {
+                    text: 'Название',
+                    align: 'left',
+                    sortable: false,
+                    value: 'prod_descr'
+                },
+                {
+                    text: 'Издательство',
+                    align: 'left',
+                    sortable: false,
+                    value: 'man_descr'
+                },
+                {
+                    text: 'Количество',
+                    align: 'left',
+                    sortable: false,
+                    value: 'quantity'
+                },
+                {
+                    text: 'Цена',
+                    align: 'left',
+                    sortable: false,
+                    value: 'price'
+                }
+           ],
+           requests,
+           statuses,
+           editedIndex: -1,
+           editedItem: {
+              request_id: 0,
+              status_id: 0,
+              status_descr: '',
+              customer_name: '',
+              customer_email: '',
+              customer_phone: '',
+              products: []
+            },
+           defaultItem: {
+              request_id: 0,
+              status_id: 0,
+              status_descr: '',
+              customer_name: '',
+              customer_email: '',
+              customer_phone: '',
+              products: []
+            }
+      }
+  },
+
+  computed: {
+    formTitle () {
+      'Редактирование'
+    }
+  },
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
+
+  methods:
+  {
+    editItem (item)
+    {
+        this.editedIndex = this.requests.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+
+        const index = this.requests[this.requests.indexOf(item)].request_id;
+        data = {'request_id': index}
+
+        var url = '/admin/api/requests/get_additional_info';
+        var res = sendJsonAndGetTextFromService(url, data , 'POST');
+
+        var products = JSON.parse(res);
+        this.editedItem.products = products;
+
+        console.log(products);
+        console.log(this.editedItem.products);
+
+        this.dialog = true;
+
+    },
+
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+
+    save () {
+        var url = '/admin/api/users/update';
+        data = [{'user_id': this.editedItem.user_id}, {'access_level': this.editedItem.access_level}];
+        var res = sendJsonAndGetTextFromService(url, data , 'POST');
+
+        Object.assign(this.users[this.editedIndex], this.editedItem)
+        this.close()
+    }
+  }
+ })
+
+</script>
+
 

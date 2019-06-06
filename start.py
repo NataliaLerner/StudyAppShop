@@ -67,8 +67,20 @@ def admin():
 
 @app.route('/order_management')
 def order_management():
-    #global db
-    return render_template('order_management.html')
+    global db
+    requests = db.get_requests()
+    statuses = db.get_statuses()
+    return render_template('order_management.html',requests = json.dumps(requests, indent=4), statuses = json.dumps(statuses, indent=4))
+
+
+@app.route('/admin/api/requests/get_additional_info', methods=['POST'])
+def get_additional_info():
+    global db
+    request_id = request.json['request_id']
+    request_products = db.get_request_products(request_id)
+    print (request_products)
+    return json.dumps(request_products, indent=4), 200
+
 
 @app.route('/category_management')
 def category_management():
