@@ -34,7 +34,17 @@ def contacts():
 
 @app.route('/basket')
 def basket():
-    return render_template('basket.html', e1=0)
+    session["basket"] = [{"id_": 1, "count":10}, {"id_": 2, "count":20}]
+    global db
+    basket_ = []
+    if ("basket" in session.keys()):            
+        for i in session["basket"]:
+            basket_.append(db.get_product_name_and_price(i["id_"]))
+            basket_[-1]["count"] = i["count"]
+
+    return render_template('basket.html', basket_ = json.dumps(basket_, indent=4))
+
+
 
 @app.route('/get_token')
 def test():
@@ -64,6 +74,10 @@ def shop():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
+@app.route('/basket_goods')
+def basket_goods():
+    return render_template('basket_goods.html')
 
 @app.route('/order_management')
 def order_management():
@@ -153,6 +167,8 @@ def users_management():
     global db
     u = db.get_users()
     return render_template('users_management.html', users = json.dumps(User.ToMap(u), indent=4))
+
+
 
 @app.route('/admin/api/users/update', methods=['POST'])
 def update_user():
