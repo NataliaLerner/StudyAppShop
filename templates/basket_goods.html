@@ -1,0 +1,20 @@
+<div id="basket_goods">
+	<template>	
+
+		<v-container>
+			<v-data-table :headers="headers"
+			:items="basket_"
+			class="elevation-1"
+			:rows-per-page-items='[20, 20, {text: " ", value: -1}]'>
+
+			<template v-slot:items="props">
+				<td>[[]]</td>
+				<td>[[props.item.name]]</td>
+				<td>[[props.item.price]]</td>
+				<td>[[props.item.count]]</td>
+				<td>[[]]</td>
+			</template>
+		</v-data-table>
+	</v-container>
+</template>
+</div>
