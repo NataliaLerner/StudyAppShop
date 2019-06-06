@@ -171,6 +171,8 @@ var el = new Vue({
   delimiters: ['[[',']]'],
   data () {
       return {
+            dialog: false,
+            dialog_image: false,
             imageUrl : "",
             language : {{language|safe}},
             manufacture : {{manufacture|safe}},
