@@ -7,7 +7,7 @@ from flask import session
 
 from .config import DbSettings
 from . import log
-from .base_type import AccessLevel, User, Category, ImageType, ImageGoods, Language, Manufacture, Goods
+from .base_type import AccessLevel, User, Category, ImageType, ImageGoods, Language, Manufacture, Goods, Statuses, Requests, RequestProducts
 
 logger = logging.getLogger(__name__)
 
@@ -190,6 +190,14 @@ class DbApi:
 			res.append(image)
 		return res
 
+	def get_request_products(self, request_id):
+		spname = 'sp_requestproducts_02'
+		status = self._cur.callproc(spname, args = (request_id,))
+		requests = self._cur.fetchall()
+		res = RequestProducts.ToArrOfMap(requests)
+		print(res)
+		return res
+
 
 	@try_except
 	@commit
@@ -291,4 +299,22 @@ class DbApi:
 		res = []
 		for i in self._cur.fetchall():
 			res.append(i[0])
+		return res
+
+	@try_except
+	@valid_admin
+	def get_statuses(self):
+		query = """select * from statuses"""
+		self._cur.execute(query)
+		statuses = self._cur.fetchall()
+		res = Statuses.ToMap(statuses)
+		return res
+
+	@try_except
+	@valid_admin
+	def get_requests(self):
+		pname = 'sp_requests_02'
+		status = self._cur.callproc(pname)
+		requests = self._cur.fetchall()
+		res = Requests.ToArrOfMap(requests)
 		return res
