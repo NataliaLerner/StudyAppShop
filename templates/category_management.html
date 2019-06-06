@@ -164,7 +164,7 @@ var el = new Vue({
 
         var res = sendJsonAndGetTextFromService(url, data , 'POST');
 
-        Object.assign(this.categories[this.editedIndex], this.editedItem)
+        Object.assign(this.categories[this.editedIndex], this.editedItem);
       }
 
       else {

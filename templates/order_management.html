@@ -52,9 +52,9 @@
                                         <td class="justify-center layout px-0">
                                             <!--v-icon
                                                     small
-                                                    @click="editItem(props.item)">
+                                                    @click="editStatus(props.item)">
                                                 edit
-                                            </v-icon-->
+                                            </--v-icon-->
                                         </td>
                                     </template>
 
@@ -84,7 +84,7 @@
 
                 <template v-slot:items="props">
                     <td>[[props.item.request_id]]</td>
-                    <td>[[props.item.status_descr]]</td>
+                    <td>[[f_status_descr(props.item.status_id)]]</td>
                     <td>[[props.item.customer_name]]</td>
                     <td>[[props.item.customer_email]]</td>
                     <td>[[props.item.customer_phone]]</td>
@@ -175,7 +175,7 @@ var el = new Vue({
                     value: 'quantity'
                 },
                 {
-                    text: 'Цена',
+                    text: 'Цена (шт)',
                     align: 'left',
                     sortable: false,
                     value: 'price'
@@ -247,13 +247,19 @@ var el = new Vue({
     },
 
     save () {
-        var url = '/admin/api/users/update';
-        data = [{'user_id': this.editedItem.user_id}, {'access_level': this.editedItem.access_level}];
+        var url = '/admin/api/requests/update_order_status';
+
+        data = [{'request_id': this.editedItem.request_id}, {'status_id': this.editedItem.status_id}];
         var res = sendJsonAndGetTextFromService(url, data , 'POST');
 
-        Object.assign(this.users[this.editedIndex], this.editedItem)
-        this.close()
+        Object.assign(this.requests[this.editedIndex], this.editedItem);
+        this.close();
+    },
+
+    f_status_descr(val){
+        return statuses[val-1]['descr'];
     }
+
   }
  })
 

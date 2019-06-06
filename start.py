@@ -95,6 +95,15 @@ def get_additional_info():
     print (request_products)
     return json.dumps(request_products, indent=4), 200
 
+@app.route('/admin/api/requests/update_order_status', methods=['POST'])
+def update_order_status():
+    global db
+    request_id = request.json[0]['request_id']
+    status_id = request.json[1]['status_id']
+    db.update_order_status(request_id,status_id)
+    return json.dumps({'result': True})
+
+
 
 @app.route('/category_management')
 def category_management():
